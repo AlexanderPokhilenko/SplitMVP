@@ -114,3 +114,7 @@
   width: 2em;
   border-radius: 50%;
 }
+
+.message-area {
+  resize: none;
+}
