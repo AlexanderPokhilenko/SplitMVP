@@ -51,14 +51,65 @@
 /*!
  * Other styles
  */
- .thumbnail
- {
+ .thumbnail {
    width: 4rem;
    height: 4rem;
  }
 
- .small-thumbnail
- {
+ .small-thumbnail {
    width: 2rem;
    height: 2rem;
  }
+
+ .message {
+   padding: 5px;
+   border-style: solid;
+   border-color: black;
+   border-width: 1px;
+   border-radius: 15px;
+ }
+
+ .tag {
+   margin: 1px;
+   padding: 2px 5px;
+   border-style: solid;
+   border-color: black;
+   border-width: 1px;
+   border-radius: 50%;
+   display: inline-block;
+ }
+
+ .tag-whitelist {
+   background: white;
+   color: black;
+ }
+ 
+ .tag-lightgraylist {
+  background: lightgray;
+  color: black;
+}
+
+.tag-darkgraylist {
+  background: dimgray;
+  color: white;
+}
+
+.tag-blacklist {
+  background: black;
+  color: white;
+}
+
+.tag-matched {
+  font-weight: bold;
+}
+
+.tag-inappropriate {
+  color: red;
+}
+
+.btn-small-circle {
+  padding: 0;
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+}
