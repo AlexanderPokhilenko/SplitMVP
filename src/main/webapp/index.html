@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     <link rel="stylesheet" href="./css/site.css">
 
-    <!-- JS -->  
+    <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"></script>
+    <script src="./js/posts.js"></script>
   </head>
 
   <body>
@@ -69,7 +70,7 @@
                 <div class="row">
                     <div class="col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8 pb-4">
                         <!-- Posts -->
-                        <div class="message mt-4 text-justify float-left">
+                        <div class="message mt-4 text-justify float-left" data-message-id="1">
                             <!-- Header -->
                             <div class="d-flex flex-row justify-content-between p-1">
                                 <img src="https://i.imgur.com/yTFUilP.jpg" class="small-thumbnail rounded-circle">
@@ -88,7 +89,7 @@
                                     <span class="tag tag-whitelist">Tag 3</span>
                                     <span class="tag tag-lightgraylist">Tag 4</span>
                                     <span class="tag tag-lightgraylist">Tag 5</span>
-                                    <button type="button" class="btn btn-outline-dark btn-small-circle">➕</button>
+                                    <button type="button" class="btn btn-add-white-tag btn-outline-dark btn-small-circle">➕</button>
                                 </div>
                                 <!-- Blacklist -->
                                 <div>
@@ -96,20 +97,20 @@
                                     <span class="tag tag-blacklist">Tag 7</span>
                                     <span class="tag tag-darkgraylist">Tag 8</span>
                                     <span class="tag tag-darkgraylist">Tag 9</span>
-                                    <button type="button" class="btn btn-outline-dark btn-small-circle">➕</button>
+                                    <button type="button" class="btn btn-add-black-tag btn-outline-dark btn-small-circle">➕</button>
                                 </div>
                             </div>
                             <!-- Bottom -->
                             <div class="d-flex flex-row justify-content-start p-1">
-                                <button type="button" class="btn align-self-center py-0">🡅</button>
+                                <button type="button" class="btn btn-like align-self-center py-0">🡅</button>
                                 <span class="align-self-center">React</span>
-                                <button type="button" class="btn align-self-center py-0">🡇</button>
-                                <button type="button" class="btn align-self-center py-0">🗨 Comment</button>
+                                <button type="button" class="btn btn-dislike align-self-center py-0">🡇</button>
+                                <button type="button" class="btn btn-comment align-self-center py-0">🗨 Comment</button>
                             </div>
                         </div>
 
                         
-                        <div class="message mt-4 text-justify float-left">
+                        <div class="message mt-4 text-justify float-left" data-message-id="2">
                             <!-- Header -->
                             <div class="d-flex flex-row justify-content-between p-1">
                                 <img src="https://i.imgur.com/yMH7GKz.png" class="small-thumbnail rounded-circle">
@@ -129,7 +130,7 @@
                                     <span class="tag tag-whitelist">Tag 3</span>
                                     <span class="tag tag-lightgraylist">Tag 4</span>
                                     <span class="tag tag-lightgraylist">Tag 5</span>
-                                    <button type="button" class="btn btn-outline-dark btn-small-circle">➕</button>
+                                    <button type="button" class="btn btn-add-white-tag btn-outline-dark btn-small-circle">➕</button>
                                 </div>
                                 <!-- Blacklist -->
                                 <div>
@@ -137,20 +138,20 @@
                                     <span class="tag tag-blacklist">Tag 7</span>
                                     <span class="tag tag-darkgraylist">Tag 8</span>
                                     <span class="tag tag-darkgraylist">Tag 9</span>
-                                    <button type="button" class="btn btn-outline-dark btn-small-circle">➕</button>
+                                    <button type="button" class="btn btn-add-black-tag btn-outline-dark btn-small-circle">➕</button>
                                 </div>
                             </div>
                             <!-- Bottom -->
                             <div class="d-flex flex-row justify-content-start p-1">
-                                <button type="button" class="btn align-self-center py-0">🡅</button>
+                                <button type="button" class="btn btn-like align-self-center py-0">🡅</button>
                                 <span class="align-self-center">React</span>
-                                <button type="button" class="btn align-self-center py-0">🡇</button>
-                                <button type="button" class="btn align-self-center py-0">🗨 Comment</button>
+                                <button type="button" class="btn btn-dislike align-self-center py-0">🡇</button>
+                                <button type="button" class="btn btn-comment align-self-center py-0">🗨 Comment</button>
                             </div>
                         </div>
 
                         
-                        <div class="message mt-4 text-justify float-left">
+                        <div class="message mt-4 text-justify float-left"  data-message-id="3">
                             <!-- Header -->
                             <div class="d-flex flex-row justify-content-between p-1">
                                 <img src="https://i.imgur.com/v6x88XE.jpg" class="small-thumbnail rounded-circle">
