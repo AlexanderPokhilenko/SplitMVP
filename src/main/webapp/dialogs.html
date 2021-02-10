@@ -127,15 +127,17 @@
                             </div>
                         </div>
                         <!-- Input -->
-                        <div class="input-group h-5">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" title="Attach file.">📎</button>
+                        <form action="./dialogs" method="post">
+                            <div class="input-group h-5">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" title="Attach file.">📎</button>
+                                </div>
+                                <textarea class="message-area form-control h-100" placeholder="Write message..." name="text"></textarea>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" title="Send message.">➤</button>
+                                </div>
                             </div>
-                            <textarea class="message-area form-control h-100" placeholder="Write message..."></textarea>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" title="Send message.">➤</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
