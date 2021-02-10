@@ -66,7 +66,7 @@
                     </div>
                     <!-- Dialogs -->
                     <div class="tab-pane fade show active" id="nav-dialogs" role="tabpanel" aria-labelledby="nav-dialogs-tab">
-                        <div class="d-flex flex-row justify-content-between p-1 border border-secondary">
+                        <div class="d-flex flex-row justify-content-between p-1 border border-secondary position-relative">
                             <!-- Profile picture -->
                             <div class="image mr-2"><img src="https://i.imgur.com/CFpa3nK.jpg" class="thumbnail rounded-circle"/></div>
                             <div class="d-flex flex-column flex-fill justify-content-between">
@@ -77,9 +77,10 @@
                                 </div>
                                 <span class="flex-fill text-cut">Lorem ipsum dolor...</span>
                             </div>
+                            <a href="./dialogs?id=1" class="stretched-link"></a>
                         </div>
                         
-                        <div class="d-flex flex-row justify-content-between p-1 border border-secondary">
+                        <div class="d-flex flex-row justify-content-between p-1 border border-secondary position-relative">
                             <!-- Profile picture -->
                             <div class="image mr-2"><img src="https://i.imgur.com/fgrfeVu.jpg" class="thumbnail rounded-circle"/></div>
                             <div class="d-flex flex-column flex-fill justify-content-between">
@@ -90,6 +91,7 @@
                                 </div>
                                 <span class="flex-fill text-cut">Lorem ipsum dolor...</span>
                             </div>
+                            <a href="./dialogs?id=2" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
@@ -128,6 +130,7 @@
                         </div>
                         <!-- Input -->
                         <form action="./dialogs" method="post">
+                            <input type="hidden" name="id" value="1">
                             <div class="input-group h-5">
                                 <div class="input-group-prepend">
                                     <button class="btn btn-outline-secondary" type="button" title="Attach file.">📎</button>
