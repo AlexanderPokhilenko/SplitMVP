@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  tomcat:
+    image: tomcat:9.0.43-jdk8-openjdk
+    ports:
+      - "127.0.0.1:8080:8080"
+    container_name: tomcat
+    volumes:
+      - ./target:/usr/local/tomcat/webapps
+  mypostgres:
+    image: postgres
+    ports:
+     - "5432:5432"
+    environment:
+     - POSTGRES_PASSWORD=password
+     - POSTGRES_USER=postgres
+     - POSTGRES_DB=mydb
