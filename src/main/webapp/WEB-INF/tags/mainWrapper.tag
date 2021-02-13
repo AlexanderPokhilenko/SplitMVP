@@ -29,14 +29,16 @@
             </div>
         </div>
 
-        <div id="page-content-wrapper">
+        <div id="page-content-wrapper" class="d-flex flex-column">
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                 <button class="btn btn-primary" id="menu-toggle">Menu</button>
                 <script>$("#menu-toggle").click(function (e) { e.preventDefault(); $("#wrapper").toggleClass("toggled"); });</script>
             </nav>
 
             <!-- Content part -->
-            <jsp:doBody/>
+            <div class="container-fluid overflow-auto flex-grow-1 p-0">
+                <jsp:doBody/>
+            </div>
         </div>
     </div>
     <!-- Scripts -->

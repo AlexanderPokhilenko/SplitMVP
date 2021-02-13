@@ -1,0 +1,9 @@
+#messages-container {
+    overflow-y: auto;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#messages-container > :first-child {
+    margin-top: auto !important;
+}

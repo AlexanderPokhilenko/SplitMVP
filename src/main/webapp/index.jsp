@@ -34,7 +34,7 @@
         </div>
       </div>
       <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">Main</a>
-      <a href="./dialogs.html" class="list-group-item list-group-item-action bg-light">Dialogs <span class="badge badge-danger" id="newDialogsSpan">5</span></a>
+      <a href="dialogs.jsp" class="list-group-item list-group-item-action bg-light">Dialogs <span class="badge badge-danger" id="newDialogsSpan">5</span></a>
       <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">My comments <span class="badge badge-danger" id="newAnswersSpan">3</span></a>
       <a href="./settings.html" class="list-group-item list-group-item-action bg-light">Settings</a>
     </jsp:attribute>
@@ -44,8 +44,8 @@
     </jsp:attribute>
 
     <jsp:body>
-        <div class="container">
-            <div class="row">
+        <div class="container position-relative">
+            <div class="row position-absolute w-100">
                 <div class="col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8 pb-4">
                     <!-- Posts -->
                     <div class="message mt-4 text-justify float-left" data-message-id="1">

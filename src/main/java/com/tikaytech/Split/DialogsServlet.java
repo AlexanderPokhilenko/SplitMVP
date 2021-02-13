@@ -14,7 +14,7 @@ public class DialogsServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<h1>You opened dialog with id "+ id + "</h1>");
-        out.println("<a href='./dialogs.html'>Go back</a>");
+        out.println("<a href='./dialogs.jsp'>Go back</a>");
         out.println("</body></html>");
     }
 
@@ -26,7 +26,7 @@ public class DialogsServlet extends HttpServlet {
         out.println("<html><body>");
         out.println("<h1>You sent to dialog with id "+ id + ":</h1>");
         out.println("<p>" + text + "</p>");
-        out.println("<a href='./dialogs.html'>Go back</a>");
+        out.println("<a href='./dialogs.jsp'>Go back</a>");
         out.println("</body></html>");
     }
 }
