@@ -3,36 +3,7 @@
 
 <t:mainWrapper>
     <jsp:attribute name="sidebarElements">
-      <div class="d-flex flex-row justify-content-between mt-2 p-1">
-        <!-- Profile picture -->
-        <div class="image mr-2"><img src="https://i.imgur.com/sicII7N.jpg" class="thumbnail rounded-circle"/></div>
-        <!-- Username -->
-        <span class="flex-fill align-self-center font-weight-bold">First Username</span>
-        <!-- Dropdown button -->
-        <button type="button" class="btn dropdown-toggle fit-cell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="right"></button>
-        <div class="dropdown-menu block-container">
-          <button type="button" class="dropdown-item" data-toggle="tooltip" data-placement="right" title="Operate from multi-account.">Multi-account</button>
-          <div class="dropdown-divider"></div>
-          <!-- Accounts part -->
-          <div class="dropdown-item d-flex flex-row justify-content-between mt-2 px-2">
-              <div class="image mr-3"><img src="https://i.imgur.com/sicII7N.jpg" class="small-thumbnail rounded-circle"/></div>
-              <span class="flex-fill align-self-center font-weight-bold">First Username</span>
-          </div>
-
-          <div class="dropdown-item d-flex flex-row justify-content-between mt-2 px-2">
-              <div class="image mr-3"><img src="https://i.imgur.com/3tgjufY.jpg" class="small-thumbnail rounded-circle"/></div>
-              <span class="flex-fill align-self-center">Second Username</span>
-          </div>
-
-          <div class="dropdown-item d-flex flex-row justify-content-between mt-2 px-2">
-              <div class="image mr-3"><img src="https://i.imgur.com/WfdkN3o.jpg" class="small-thumbnail rounded-circle"/></div>
-              <span class="flex-fill align-self-center">Third Username</span>
-          </div>
-          <!-- /Accounts part -->
-          <div class="dropdown-divider"></div>
-          <a id="logOut" href="signIn.html" class="dropdown-item" data-toggle="tooltip" data-placement="right" title="Sign out of multi-account.">Log Out</a>
-        </div>
-      </div>
+      <jsp:include page="WEB-INF/parts/sidebarTop.jsp"/>
       <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">Main</a>
       <a href="dialogs.jsp" class="list-group-item list-group-item-action bg-light">Dialogs <span class="badge badge-danger" id="newDialogsSpan">5</span></a>
       <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">My comments <span class="badge badge-danger" id="newAnswersSpan">3</span></a>
