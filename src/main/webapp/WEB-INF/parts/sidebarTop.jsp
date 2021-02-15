@@ -13,7 +13,7 @@
     <!-- Dropdown button -->
     <button type="button" class="btn dropdown-toggle fit-cell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="right"></button>
     <div class="dropdown-menu block-container">
-        <a href="./accounts?id=0&redirect=<%out.print(request.getRequestURI());%>" class="dropdown-item <%if(selected.getId() == 0) out.print("font-weight-bold");%>" data-toggle="tooltip" data-placement="right" title="Operate from multi-account">Multi-account</a>
+        <a href="./accounts?id=0&redirect=<%out.print(request.getRequestURI());%>" class="dropdown-item <%if(selected.getId() == 0L) out.print("font-weight-bold");%>" data-toggle="tooltip" data-placement="right" title="Operate from multi-account">Multi-account</a>
         <div class="dropdown-divider"></div>
         <!-- Accounts part -->
         <%

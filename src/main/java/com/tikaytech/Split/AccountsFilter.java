@@ -34,7 +34,7 @@ public class AccountsFilter implements Filter {
                 }
             }
         }
-        int selectedId = (accountIdCookie != null) ? Integer.parseInt(accountIdCookie.getValue()) : 0;
+        long selectedId = (accountIdCookie != null) ? Long.parseLong(accountIdCookie.getValue()) : 0L;
 
         Accounts accounts = new Accounts(selectedId, stubAccounts);
         request.setAttribute("accounts", accounts);

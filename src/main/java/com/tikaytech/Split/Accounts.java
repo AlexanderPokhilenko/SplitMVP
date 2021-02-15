@@ -3,23 +3,23 @@ package com.tikaytech.Split;
 import java.io.Serializable;
 
 public class Accounts implements Serializable {
-    private int selectedId;
+    private long selectedId;
     private Account[] array;
 
     public Accounts() {
         this(0, new Account[] {new Account()});
     }
 
-    public Accounts(int selectedId, Account[] accounts) {
+    public Accounts(long selectedId, Account[] accounts) {
         this.selectedId = selectedId;
         array = accounts;
     }
 
-    public int getSelectedId() {
+    public long getSelectedId() {
         return selectedId;
     }
 
-    public void setSelectedId(int selectedId) {
+    public void setSelectedId(long selectedId) {
         this.selectedId = selectedId;
     }
 

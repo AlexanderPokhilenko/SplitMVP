@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class Account implements Serializable {
     private String username;
     private String imageUrl;
-    private int id;
+    private long id;
 
     public Account() {
         this(0, "Anonymous", "https://i.imgur.com/sicII7N.jpg");
     }
 
-    public Account(int id, String username, String imageUrl) {
+    public Account(long id, String username, String imageUrl) {
         this.id = id;
         this.username = username;
         this.imageUrl = imageUrl;
@@ -33,11 +33,11 @@ public class Account implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }
