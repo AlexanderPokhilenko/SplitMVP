@@ -73,3 +73,5 @@ fabric.properties
 # Maven
 log/
 target/
+
+/src/main/webapp/WEB-INF/lib/

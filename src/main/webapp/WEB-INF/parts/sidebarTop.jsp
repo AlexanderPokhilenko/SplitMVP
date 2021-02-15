@@ -5,6 +5,8 @@
     <%
         Accounts accounts = (Accounts) request.getAttribute("accounts");
         Account selected = accounts.getSelected();
+        Object redirectUrl = request.getAttribute("javax.servlet.forward.request_uri");
+        if(redirectUrl == null) redirectUrl = request.getRequestURI();
     %>
     <!-- Profile picture -->
     <div class="image mr-2"><img src="<%out.print(selected.getImageUrl());%>" class="thumbnail rounded-circle" alt="Profile picture"/></div>
@@ -13,7 +15,7 @@
     <!-- Dropdown button -->
     <button type="button" class="btn dropdown-toggle fit-cell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="right"></button>
     <div class="dropdown-menu block-container">
-        <a href="./accounts?id=0&redirect=<%out.print(request.getRequestURI());%>" class="dropdown-item <%if(selected.getId() == 0L) out.print("font-weight-bold");%>" data-toggle="tooltip" data-placement="right" title="Operate from multi-account">Multi-account</a>
+        <a href="./accounts?id=0&redirect=<%out.print(redirectUrl);%>" class="dropdown-item <%if(selected.getId() == 0L) out.print("font-weight-bold");%>" data-toggle="tooltip" data-placement="right" title="Operate from multi-account">Multi-account</a>
         <div class="dropdown-divider"></div>
         <!-- Accounts part -->
         <%
@@ -23,7 +25,7 @@
             out.print("<span class=\"flex-fill align-self-center ");
             if(account.getId() == accounts.getSelectedId()) out.print("font-weight-bold");
             out.println("\">" + account.getUsername() + "</span>");
-            out.println("<a href=\"./accounts?id=" + account.getId() + "&redirect=" + request.getRequestURI() + "\" class=\"stretched-link\"></a>");
+            out.println("<a href=\"./accounts?id=" + account.getId() + "&redirect=" + redirectUrl + "\" class=\"stretched-link\"></a>");
             out.println("</div>");
         }
         %>
