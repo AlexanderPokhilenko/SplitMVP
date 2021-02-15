@@ -22,8 +22,12 @@
                     <div class="message mt-4 text-justify float-left" data-message-id="1">
                         <!-- Header -->
                         <div class="d-flex flex-row justify-content-between p-1">
-                            <img src="https://i.imgur.com/yTFUilP.jpg" class="small-thumbnail rounded-circle">
-                            <span class="flex-fill align-self-center"><strong>Group name</strong>, posted by <strong>Author's Username</strong> <em>1 hour ago</em></span>
+                            <span class="flex-fill align-self-center">
+                                <img src="https://i.imgur.com/yTFUilP.jpg" class="small-thumbnail rounded-circle" alt="Group's profile picture">
+                                <strong>Group name</strong>, posted by
+                                <img src="https://i.imgur.com/CFpa3nK.jpg" class="small-thumbnail rounded-circle" alt="Author's profile picture">
+                                <strong>Author's Username</strong> <em>1 hour ago</em>
+                            </span>
                         </div>
                         <!-- Content -->
                         <div class="px-2">
@@ -62,13 +66,17 @@
                     <div class="message mt-4 text-justify float-left" data-message-id="2">
                         <!-- Header -->
                         <div class="d-flex flex-row justify-content-between p-1">
-                            <img src="https://i.imgur.com/yMH7GKz.png" class="small-thumbnail rounded-circle">
-                            <span class="flex-fill align-self-center"><strong>Group name 2</strong>, posted by <strong>Author's Username</strong> <em>2 hours ago</em></span>
+                            <span class="flex-fill align-self-center">
+                                <img src="https://i.imgur.com/yMH7GKz.png" class="small-thumbnail rounded-circle" alt="Group's profile picture">
+                                <strong>Group name 2</strong>, posted by
+                                <img src="https://i.imgur.com/CFpa3nK.jpg" class="small-thumbnail rounded-circle" alt="Author's profile picture">
+                                <strong>Author's Username</strong> <em>2 hours ago</em>
+                            </span>
                         </div>
                         <!-- Content -->
                         <div class="px-2">
                             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                            <img src="https://i.imgur.com/5fBj8A0.jpg" class="rounded mx-auto d-block mw-100">
+                            <img src="https://i.imgur.com/5fBj8A0.jpg" class="rounded mx-auto d-block mw-100" alt="Attached image">
                         </div>
                         <!-- Tags -->
                         <div class="mt-3">
@@ -103,8 +111,12 @@
                     <div class="message mt-4 text-justify float-left"  data-message-id="3">
                         <!-- Header -->
                         <div class="d-flex flex-row justify-content-between p-1">
-                            <img src="https://i.imgur.com/v6x88XE.jpg" class="small-thumbnail rounded-circle">
-                            <span class="flex-fill align-self-center"><strong>Group name 3</strong>, posted by <strong>Author's Username</strong> <em>5 hours ago</em></span>
+                            <span class="flex-fill align-self-center">
+                                <img src="https://i.imgur.com/v6x88XE.jpg" class="small-thumbnail rounded-circle" alt="Group's profile picture">
+                                <strong>Group name 3</strong>, posted by
+                                <img src="https://i.imgur.com/CFpa3nK.jpg" class="small-thumbnail rounded-circle" alt="Author's profile picture">
+                                <strong>Author's Username</strong> <em>5 hours ago</em>
+                            </span>
                         </div>
                         <!-- Content -->
                         <div class="d-flex flex-row justify-content-between px-2">

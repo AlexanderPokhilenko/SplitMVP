@@ -22,28 +22,28 @@
             <div class="tab-pane fade show active" id="nav-dialogs" role="tabpanel" aria-labelledby="nav-dialogs-tab">
                 <div class="d-flex flex-row justify-content-between p-1 border border-secondary position-relative">
                     <!-- Profile picture -->
-                    <div class="image mr-2"><img src="https://i.imgur.com/CFpa3nK.jpg" class="thumbnail rounded-circle"/></div>
-                    <div class="d-flex flex-column flex-fill justify-content-between">
+                    <div class="image mr-2"><img src="https://i.imgur.com/CFpa3nK.jpg" class="thumbnail rounded-circle" alt="Interlocutor's profile picture"/></div>
+                    <div class="d-flex flex-column flex-fill justify-content-between  overflow-auto">
                         <div>
                             <!-- Username -->
                             <span class="flex-fill text-cut font-weight-bold">Interlocutor</span>
                             <span class="float-right">12:30</span>
                         </div>
-                        <span class="flex-fill text-cut">Lorem ipsum dolor...</span>
+                        <span class="flex-fill text-cut">Lorem ipsum dolor sit amet...</span>
                     </div>
                     <a href="./dialogs?id=1" class="stretched-link"></a>
                 </div>
 
                 <div class="d-flex flex-row justify-content-between p-1 border border-secondary position-relative">
                     <!-- Profile picture -->
-                    <div class="image mr-2"><img src="https://i.imgur.com/fgrfeVu.jpg" class="thumbnail rounded-circle"/></div>
-                    <div class="d-flex flex-column flex-fill justify-content-between">
+                    <div class="image mr-2"><img src="https://i.imgur.com/fgrfeVu.jpg" class="thumbnail rounded-circle" alt="Interlocutor's profile picture"/></div>
+                    <div class="d-flex flex-column flex-fill justify-content-between  overflow-auto">
                         <div>
                             <!-- Username -->
                             <span class="flex-fill text-cut font-weight-bold">Interlocutor 2</span>
                             <span class="float-right">11:45</span>
                         </div>
-                        <span class="flex-fill text-cut">Lorem ipsum dolor...</span>
+                        <span class="flex-fill text-cut">Lorem ipsum dolor sit amet...</span>
                     </div>
                     <a href="./dialogs?id=2" class="stretched-link"></a>
                 </div>
@@ -66,7 +66,7 @@
                     <!-- Dialog header -->
                     <div class="d-flex flex-row justify-content-between p-1 border border-dark bg-light">
                         <!-- Profile picture -->
-                        <div class="image mr-2"><img src="https://i.imgur.com/CFpa3nK.jpg" class="thumbnail rounded-circle"/></div>
+                        <div class="image mr-2"><img src="https://i.imgur.com/CFpa3nK.jpg" class="thumbnail rounded-circle" alt="Current interlocutor's profile picture"/></div>
                         <!-- Username -->
                         <span class="flex-fill align-self-center font-weight-bold">Interlocutor's Username</span>
                     </div>
