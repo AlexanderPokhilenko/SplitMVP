@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <t:mainWrapper>
     <jsp:attribute name="sidebarElements">
@@ -30,7 +30,9 @@
                         <div class="d-flex flex-column flex-fill justify-content-between  overflow-auto">
                             <div>
                                 <!-- Username -->
-                                <span class="flex-fill text-cut font-weight-bold">${preview.interlocutor.username}</span>
+                                <span class="flex-fill text-cut font-weight-bold">
+                                    <c:out value="${preview.interlocutor.username}"/>
+                                </span>
                                 <fmt:formatDate value="${preview.date}" pattern="hh:mm:ss dd.MM.yyyy" var="fullDate"/>
                                 <span class="float-right">
                                     <fmt:formatDate value="${preview.date}" pattern="hh:mm"/>
@@ -38,7 +40,7 @@
                             </div>
                             <span class="flex-fill text-cut">
                                 <c:if test="${cookie.accountId.value == preview.lastSenderId}"> <strong>You:</strong> </c:if>
-                                    ${preview.text}
+                                <c:out value="${preview.text}"/>
                             </span>
                         </div>
                         <a href="./dialogs?id=${preview.id}" class="stretched-link" title="Sent at: ${fullDate}"></a>
@@ -71,7 +73,9 @@
                                 <!-- Profile picture -->
                                 <div class="image mr-2"><img src="${interlocutor.imageUrl}" class="thumbnail rounded-circle" alt="Current interlocutor's profile picture"/></div>
                                 <!-- Username -->
-                                <span class="flex-fill align-self-center font-weight-bold">${interlocutor.username}</span>
+                                <span class="flex-fill align-self-center font-weight-bold">
+                                    <c:out value="${interlocutor.username}"/>
+                                </span>
                             </div>
                             <!-- Dialog container -->
                             <div id="messages-container" class="d-flex flex-column p-1 border border-dark border-bottom-0 overflow-auto flex-fill">
@@ -88,7 +92,9 @@
                                     </c:choose>
                                     <fmt:formatDate value="${message.date}" pattern="hh:mm:ss dd.MM.yyyy" var="fullDate"/>
                                     <div class="w-75 p-2 my-1 rounded border border-dark ${messageAlign}">
-                                        <span class="text-break">${message.text}</span>
+                                        <span class="text-break">
+                                            <c:out value="${message.text}"/>
+                                        </span>
                                         <span class="float-right" title="${fullDate}">
                                             <fmt:formatDate value="${message.date}" pattern="hh:mm"/>
                                         </span>
