@@ -1,0 +1,13 @@
+.thumbnail {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.small-thumbnail {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  vertical-align: middle;
+}

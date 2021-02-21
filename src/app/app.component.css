@@ -1,0 +1,23 @@
+#main-sidenav {
+  width: 15rem;
+}
+
+#main-sidenav-content {
+  height: 100vh;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+#main-toolbar {
+
+}
+
+#main-container {
+  overflow: hidden auto;
+  -webkit-flex: auto;
+  flex: auto;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+}

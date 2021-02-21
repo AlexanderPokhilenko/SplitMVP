@@ -1,0 +1,36 @@
+#accounts-part {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+/deep/.mat-tab-label, /deep/.mat-tab-label-active{
+  min-width: 0!important;
+}
+
+.active {
+  font-weight: bolder;
+}
+
+.dialog-preview-line {
+  display: flex!important;
+  align-items: center;
+}
+
+.dialog-preview-line :first-child {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dialog-preview-line :last-child {
+  float: right;
+}
+
+.mat-line .mat-badge-content {
+  top: 0;
+  right: 0;
+}
