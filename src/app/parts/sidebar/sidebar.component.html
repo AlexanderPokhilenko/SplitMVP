@@ -24,20 +24,23 @@
     </mat-menu>
   </div>
   <ng-container *ngIf="router.isActive('/dialogs', false) else navTemplate">
+    <!--suppress HtmlUnknownAttribute -->
     <mat-tab-group mat-stretch-tabs selectedIndex="1">
       <mat-tab label="Pages">
         <ng-container *ngTemplateOutlet="navTemplate"></ng-container>
       </mat-tab>
       <mat-tab label="Dialogs">
-        <!-- TODO -->
-        <mat-nav-list>
-          <mat-list-item routerLink="/dialogs" [queryParams]="{id: 0}">
-            <img matListAvatar class="thumbnail" src="./assets/images/icon.png" alt="Dialog picture">
+        <mat-nav-list *ngFor="let preview of previews">
+          <mat-list-item routerLink="/dialogs" [queryParams]="{id: preview.id}">
+            <img matListAvatar class="thumbnail" [src]="preview.pictureSrc" alt="Dialog picture">
             <div mat-line class="dialog-preview-line">
-              <strong>Username</strong>
-              <span>12:30</span>
+              <strong>{{preview.name}}</strong>
+              <span>{{preview.dateTimeStr}}</span>
             </div>
-            <div mat-line matBadge="5" matBadgeColor="accent" matBadgeSize="small"><strong>You:</strong> Hello there!!!</div>
+            <div mat-line [matBadge]="preview.unreadMessagesCount" matBadgeColor="accent" matBadgeSize="small">
+              <strong>{{preview.isCurrentAccount(selectedAccount.id) ? 'You' : preview.shortUsername}}:</strong>
+              {{preview.text}}
+            </div>
           </mat-list-item>
         </mat-nav-list>
       </mat-tab>
@@ -48,7 +51,7 @@
     <mat-nav-list>
       <a mat-list-item routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Main</a>
       <a mat-list-item routerLink="/dialogs" routerLinkActive="active">
-        <span matBadge="5" matBadgeColor="accent" matBadgeOverlap="false" matBadgeDescription="Number of unread messages">Dialogs</span>
+        <span [matBadgeHidden]="unreadMessagesCount<=0" [matBadge]="unreadMessagesCount" matBadgeColor="accent" matBadgeOverlap="false" matBadgeDescription="Number of unread messages">Dialogs</span>
       </a>
       <a mat-list-item routerLink="/comments" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
         <span matBadge="3" matBadgeColor="accent" matBadgeOverlap="false" matBadgeDescription="Number of unreacted comments">My comments</span>

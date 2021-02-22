@@ -24,6 +24,7 @@ import { CommentsComponent } from './comments/comments.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { DatePipe } from '@angular/common';
 
 const appRoutes: Routes = [
   { path: '', component: NewsComponent},
@@ -62,7 +63,7 @@ const appRoutes: Routes = [
     MatTreeModule,
     MatExpansionModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
