@@ -31,14 +31,14 @@
       </mat-tab>
       <mat-tab label="Dialogs">
         <mat-nav-list *ngFor="let preview of previews">
-          <mat-list-item routerLink="/dialogs" [queryParams]="{id: preview.id}">
+          <mat-list-item [routerLink]="['/dialogs', preview.id]">
             <img matListAvatar class="thumbnail" [src]="preview.pictureSrc" alt="Dialog picture">
             <div mat-line class="dialog-preview-line">
               <strong>{{preview.name}}</strong>
               <span>{{preview.dateTimeStr}}</span>
             </div>
-            <div mat-line [matBadge]="preview.unreadMessagesCount" matBadgeColor="accent" matBadgeSize="small">
-              <strong>{{preview.isCurrentAccount(selectedAccount.id) ? 'You' : preview.shortUsername}}:</strong>
+            <div mat-line [matBadgeHidden]="preview.unreadMessagesCount<=0" [matBadge]="preview.unreadMessagesCount" matBadgeColor="accent" matBadgeSize="small">
+              <strong>{{preview.isDraft ? 'Draft' : preview.isCurrentAccount(selectedAccount.id) ? 'You' : preview.shortUsername}}:</strong>
               {{preview.text}}
             </div>
           </mat-list-item>

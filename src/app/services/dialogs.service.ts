@@ -7,6 +7,7 @@ import { AccountsService } from './accounts.service';
   providedIn: 'root'
 })
 export class DialogsService {
+  public sidebarCallback: () => void;
   private readonly dialogs: {[id: number]: Dialog};
   constructor(private readonly accountsService: AccountsService) {
     this.dialogs = { // temporary
@@ -35,6 +36,23 @@ export class DialogsService {
         'General chat',
         'https://i.imgur.com/tGUXjPO.jpeg')
     };
+  }
+  sendMessage(dialogId: number, text: string): void {
+    const dialog = this.dialogs[dialogId];
+    const messages = dialog.messages;
+    const nextMessageId = messages[messages.length - 1].id + 1;
+    const selectedId = this.accountsService.getSelected().id;
+    const accounts = this.accountsService.getAccounts();
+    const accountId = selectedId !== 0 ? selectedId : dialog.interlocutors.find(acc => accounts.find(a => a.id === acc.id)).id;
+    dialog.messages.push(new Message(nextMessageId, text, accountId));
+    dialog.lastReadMessageId = nextMessageId;
+    dialog.draftText = null;
+    this.sidebarCallback();
+  }
+  markDialogAsRead(id: number): void {
+    const dialog = this.getDialogById(id);
+    dialog.lastReadMessageId = dialog.messages[dialog.messages.length - 1].id;
+    this.sidebarCallback();
   }
   getDialogById(id: number): Dialog {
     return this.dialogs[id];

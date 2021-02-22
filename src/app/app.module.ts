@@ -24,10 +24,18 @@ import { CommentsComponent } from './comments/comments.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { AccountsService } from './services/accounts.service';
+import { DialogsPreviewsService } from './services/dialogs-previews.service';
+import { DialogsService } from './services/dialogs.service';
 
 const appRoutes: Routes = [
   { path: '', component: NewsComponent},
+  { path: 'dialogs/:id', component: DialogsComponent},
   { path: 'dialogs', component: DialogsComponent},
   { path: 'settings', component: SettingsComponent },
   { path: 'comments', component: CommentsComponent },
@@ -50,6 +58,7 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
+    FormsModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
@@ -61,9 +70,12 @@ const appRoutes: Routes = [
     MatBadgeModule,
     MatChipsModule,
     MatTreeModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, AccountsService, DialogsPreviewsService, DialogsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

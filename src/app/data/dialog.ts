@@ -7,7 +7,8 @@ export class Dialog {
               public messages: Message[],
               public name?: string,
               public pictureSrc?: string,
-              public lastReadMessageId: number = 0) {
+              public lastReadMessageId: number = 0,
+              public draftText: string = null) {
     if (lastReadMessageId < 0) { this.lastReadMessageId = messages[messages.length - 1].id; }
   }
   public get isDirect(): boolean {

@@ -7,7 +7,8 @@ export class DialogPreview {
               public dateTimeStr: string,
               public text: string,
               public lastAuthor: Account,
-              public unreadMessagesCount: number) {
+              public unreadMessagesCount: number,
+              public isDraft: boolean = false) {
   }
   public isCurrentAccount(accountId: number): boolean {
     return this.lastAuthor.id === accountId;

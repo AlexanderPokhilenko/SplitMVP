@@ -1,0 +1,59 @@
+#messages-container {
+  overflow-y: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+}
+
+#messages-container > :first-child {
+  margin-top: auto !important;
+}
+
+#message-area {
+  resize: none;
+}
+
+.text-cut {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.text-break {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.message {
+  min-width: 25%;
+  max-width: 75%;
+  margin: 0.5em 0;
+  margin-bottom: 0.5em!important;
+}
+
+.message-username {
+  font-size: 10pt;
+}
+
+.message-date-time {
+  font-size: 8pt;
+  color: dimgray;
+  float: right;
+  margin-left: 0.25em;
+}
+
+/deep/mat-form-field {
+  width: 100%!important;
+}
+
+/deep/.mat-form-field-wrapper {
+  padding: 0!important;
+}
+
+/deep/.mat-form-field-flex {
+  align-items: center!important;
+}
+
+/deep/.mat-form-field-infix {
+  padding: 0.25em 0!important;
+}
