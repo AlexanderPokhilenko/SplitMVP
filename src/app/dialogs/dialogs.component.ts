@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AccountsService } from '../services/accounts.service';
@@ -13,7 +13,7 @@ import { Account } from '../data/account';
   templateUrl: './dialogs.component.html',
   styleUrls: ['./dialogs.component.css', '../css/thumbnails.css', '../css/containers.css']
 })
-export class DialogsComponent implements OnInit {
+export class DialogsComponent implements OnInit, AfterViewChecked {
   private id?: number;
   dialog?: Dialog;
   preview?: DialogPreview;
@@ -33,6 +33,14 @@ export class DialogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  ngAfterViewChecked(): void {
+    this.scrollToLastRead();
+  }
+  scrollToLastRead(): void {
+    const lastReadMessage = document.getElementById('msg' + this.dialog.lastReadMessageId);
+    if (lastReadMessage === null) { return; }
+    lastReadMessage.scrollIntoView();
   }
   sendMessage(): void {
     this.dialogsService.sendMessage(this.id, this.dialog.draftText);

@@ -2,13 +2,13 @@
 <ng-template #dialogsDiv>
   <div id="dialog-container" class="container">
     <div id="inner-dialog-container" class="row">
-      <mat-card class="main-column border border-dark p-0 d-flex flex-column h-100">
+      <mat-card class="main-column">
         <!-- Dialog header -->
-        <mat-card-header>
+        <mat-card-header style="border-bottom-style: groove">
           <!-- Profile picture -->
           <img mat-card-avatar [src]="preview.pictureSrc" class="thumbnail" alt="Current dialog picture"/>
           <!-- Username -->
-          <mat-card-title class="flex-fill align-self-center font-weight-bold"> {{preview.name}} </mat-card-title>
+          <mat-card-title> {{preview.name}} </mat-card-title>
           <mat-card-subtitle>
             <ng-container *ngIf="dialog.interlocutors.length < 3 then directMessagesSubtitle else chatUsersPart"></ng-container>
             <ng-template #directMessagesSubtitle>
@@ -33,9 +33,9 @@
           </mat-card-subtitle>
         </mat-card-header>
         <!-- Dialog container -->
-        <mat-card-content id="messages-container" class="d-flex flex-column p-1 border border-dark border-bottom-0 overflow-auto flex-fill">
+        <mat-card-content id="messages-container">
           <!-- Messages -->
-          <mat-card *ngFor="let message of dialog.messages" class="message" [style.align-self]="isCurrentAccount(message.authorId) ? 'end' : 'start'">
+          <mat-card *ngFor="let message of dialog.messages" [id]="'msg' + message.id" class="message" [style.align-self]="isCurrentAccount(message.authorId) ? 'flex-end' : 'flex-start'">
             <mat-card-header *ngIf="!dialog.isDirect">
               <img mat-card-avatar class="small-thumbnail" [src]="getAccountById(message.authorId).imageUrl" alt="Author profile picture"/>
               <strong class="message-username">{{getAccountById(message.authorId).username}}</strong>
