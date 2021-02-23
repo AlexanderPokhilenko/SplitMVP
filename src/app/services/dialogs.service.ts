@@ -38,12 +38,14 @@ export class DialogsService {
     };
   }
   sendMessage(dialogId: number, text: string): void {
+    if (text === null || text === undefined || text.trim() === '') { return; }
     const dialog = this.dialogs[dialogId];
     const messages = dialog.messages;
     const nextMessageId = messages[messages.length - 1].id + 1;
     const selectedId = this.accountsService.getSelected().id;
     const accounts = this.accountsService.getAccounts();
-    const accountId = selectedId !== 0 ? selectedId : dialog.interlocutors.find(acc => accounts.find(a => a.id === acc.id)).id;
+    const accountId = selectedId !== 0 && dialog.interlocutors.find(acc => acc.id === selectedId) ? selectedId :
+      dialog.interlocutors.find(acc => accounts.find(a => a.id === acc.id)).id;
     dialog.messages.push(new Message(nextMessageId, text, accountId));
     dialog.lastReadMessageId = nextMessageId;
     dialog.draftText = null;
