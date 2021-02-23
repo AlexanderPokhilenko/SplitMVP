@@ -38,6 +38,7 @@ export class DialogsComponent implements OnInit, AfterViewChecked {
     this.scrollToLastRead();
   }
   scrollToLastRead(): void {
+    if (this.dialog === undefined) { return; }
     const lastReadMessage = document.getElementById('msg' + this.dialog.lastReadMessageId);
     if (lastReadMessage === null) { return; }
     lastReadMessage.scrollIntoView();
