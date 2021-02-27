@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -11,6 +12,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Theme, createStyles, withStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
+import AccountsStore from '../../stores/AccountsStore';
+import AccountsDropdown from "./AccountsDropdown";
 
 const drawerWidth = 240;
 
@@ -45,6 +48,7 @@ const styles = (theme: Theme) =>
         content: {
             flexGrow: 1,
             padding: theme.spacing(3),
+            paddingTop: 0
         },
         active: {
             color: theme.palette.primary.dark,
@@ -54,16 +58,24 @@ const styles = (theme: Theme) =>
         }
     });
 
-interface Props {
-    classes: any,
-    theme: any
+type StoreProps = {
+    AccountsStore: AccountsStore;
+};
+
+interface Props extends StoreProps {
+    classes: any;
+    theme: any;
 }
 
 interface State {
     mobileOpen: boolean
 }
 
+@inject("AccountsStore")
+@observer
 class Sidebar extends Component<Props, State> {
+    static defaultProps = {} as StoreProps;
+
     constructor(props: Props) {
         super(props);
         this.state = { ...this.state };
@@ -78,6 +90,8 @@ class Sidebar extends Component<Props, State> {
         const drawer = (
             <div>
                 <div className={classes.toolbar} />
+                <Divider />
+                <AccountsDropdown />
                 <Divider />
                 <List>
                     {[{text: 'Main', link: '/'}, {text: 'Dialogs', link: '/dialogs'},
