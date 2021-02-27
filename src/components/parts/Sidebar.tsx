@@ -14,6 +14,8 @@ import { Theme, createStyles, withStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 import AccountsStore from '../../stores/AccountsStore';
 import AccountsDropdown from "./AccountsDropdown";
+import {IconButton} from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
 
 const drawerWidth = 240;
 
@@ -68,7 +70,7 @@ interface Props extends StoreProps {
 }
 
 interface State {
-    mobileOpen: boolean
+    open: boolean
 }
 
 @inject("AccountsStore")
@@ -80,12 +82,13 @@ class Sidebar extends Component<Props, State> {
         super(props);
         this.state = { ...this.state };
     }
+
+    handleDrawerToggle = () => {
+        this.setState({open: !this.state.open});
+    };
+
     render() {
         const { classes, theme } = this.props;
-
-        const handleDrawerToggle = () => {
-            this.setState({mobileOpen: !this.state.mobileOpen});
-        };
 
         const drawer = (
             <div>
@@ -111,20 +114,29 @@ class Sidebar extends Component<Props, State> {
                 <CssBaseline />
                 <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={this.handleDrawerToggle}
+                            edge="start"
+                            className={classes.menuButton}
+                        >
+                            <MenuIcon fontSize="large" />
+                        </IconButton>
                         <Typography variant="h6" noWrap>
                             Split
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <nav className={classes.drawer} aria-label="mailbox folders">
+                <nav className={classes.drawer} aria-label="Navigation links">
                     {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                     <Hidden smUp implementation="css">
                         <Drawer
                             container={container}
                             variant="temporary"
                             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                            open={this.state.mobileOpen}
-                            onClose={handleDrawerToggle}
+                            open={this.state.open}
+                            onClose={this.handleDrawerToggle}
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
