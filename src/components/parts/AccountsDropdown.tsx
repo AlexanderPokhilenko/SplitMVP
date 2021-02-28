@@ -24,7 +24,6 @@ const styles = () =>
         }
     });
 
-
 type StoreProps = {
     AccountsStore: AccountsStore;
 };
@@ -78,11 +77,12 @@ class AccountsDropdown extends Component<Props, State> {
         const accountsStore = this.props.AccountsStore;
         const multiAccount = accountsStore.multiAccount;
         const selectedAccount = accountsStore.getSelected();
-        const keyPrefix = "user_accounts_";
+        const menuId = "accounts_menu";
+        const keyPrefix = "user_account_";
 
         return (
             <div>
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick} className={this.props.classes.selected}>
+                <Button aria-controls={menuId} aria-haspopup="true" onClick={this.handleClick} className={this.props.classes.selected}>
                     <Avatar className="thumbnail" alt={selectedAccount.username} src={selectedAccount.imageUrl} />
                     <ListItemText primary={selectedAccount.username} />
                     <ListItemIcon>
@@ -90,7 +90,7 @@ class AccountsDropdown extends Component<Props, State> {
                     </ListItemIcon>
                 </Button>
                 <Menu
-                    id="simple-menu"
+                    id={menuId}
                     anchorEl={this.state.anchorEl}
                     keepMounted
                     open={Boolean(this.state.anchorEl)}

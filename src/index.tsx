@@ -11,10 +11,15 @@ import Comments from "./components/Comments";
 import Sign from "./components/Sign";
 import Settings from "./components/Settings";
 import NotFound from "./components/NotFound";
-import AccountsStore from "./stores/AccountsStore";
+import RootStore from "./stores/RootStore";
+
+const rootStore = new RootStore();
 
 const stores = {
-    AccountsStore: new AccountsStore()
+    RootStore: rootStore,
+    AccountsStore: rootStore.accountsStore,
+    DialogsStore: rootStore.dialogsStore,
+    DialogsPreviewsStore: rootStore.dialogsPreviewsStore
 };
 
 ReactDOM.render(

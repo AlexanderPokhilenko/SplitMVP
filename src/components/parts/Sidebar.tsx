@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import { Component, Fragment, ChangeEvent } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -11,11 +10,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Theme, createStyles, withStyles } from '@material-ui/core/styles';
-import { NavLink } from 'react-router-dom';
-import AccountsStore from '../../stores/AccountsStore';
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 import AccountsDropdown from "./AccountsDropdown";
-import {IconButton} from "@material-ui/core";
+import {IconButton, Tabs, Tab, Box} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
+import DialogPreviews from "./DialogPreviews";
+import { matchPath } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -57,38 +57,96 @@ const styles = (theme: Theme) =>
             "& [class*='MuiListItemText']": {
                 fontWeight: "bold"
             }
+        },
+        tab: {
+            minWidth: drawerWidth / 2 + 'px'
         }
     });
 
-type StoreProps = {
-    AccountsStore: AccountsStore;
-};
 
-interface Props extends StoreProps {
+interface Props {
     classes: any;
     theme: any;
 }
 
 interface State {
-    open: boolean
+    open: boolean;
+    tabIndex: number;
 }
 
-@inject("AccountsStore")
-@observer
-class Sidebar extends Component<Props, State> {
-    static defaultProps = {} as StoreProps;
+type CurrentProps = RouteComponentProps & Props;
 
-    constructor(props: Props) {
+class TabPanel extends Component<{value: number, index: number}> {
+    render() {
+        const {value, index, children, ...other} = this.props;
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+            >
+                {value === index && (
+                    <Box>
+                        {this.props.children}
+                    </Box>
+                )}
+            </div>
+        );
+    }
+}
+
+class Sidebar extends Component<CurrentProps, State> {
+    constructor(props: CurrentProps) {
         super(props);
-        this.state = { ...this.state };
+        this.state = { ...this.state, tabIndex: 1 };
     }
 
     handleDrawerToggle = () => {
         this.setState({open: !this.state.open});
     };
 
+    handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+        this.setState({tabIndex: newValue});
+    };
+
+    generateTabProps(index: any) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
     render() {
         const { classes, theme } = this.props;
+        const isDialogPage = matchPath(this.props.location.pathname, "/dialogs/:id(\\d+)?");
+
+        const navList = (
+            <List>
+                {[{text: 'Main', link: '/'}, {text: 'Dialogs', link: '/dialogs'},
+                    {text: 'My comments', link: '/comments'}, {text: 'Settings', link: '/settings'}].map((pair, index) => (
+                    <ListItem button key={pair.text} component={NavLink} to={pair.link} exact={index===0} activeClassName={classes.active}>
+                        <ListItemText primary={pair.text} />
+                    </ListItem>
+                ))}
+            </List>
+        );
+
+        const tabs = (
+            <Fragment>
+                <Tabs value={this.state.tabIndex} onChange={this.handleTabChange} aria-label="Navigation tabs">
+                    <Tab className={classes.tab} label="Pages" {...this.generateTabProps(0)} />
+                    <Tab className={classes.tab} label="Dialogs" {...this.generateTabProps(1)} />
+                </Tabs>
+                <TabPanel value={this.state.tabIndex} index={0}>
+                    {navList}
+                </TabPanel>
+                <TabPanel value={this.state.tabIndex} index={1}>
+                    <DialogPreviews/>
+                </TabPanel>
+            </Fragment>
+        );
 
         const drawer = (
             <div>
@@ -96,14 +154,7 @@ class Sidebar extends Component<Props, State> {
                 <Divider />
                 <AccountsDropdown />
                 <Divider />
-                <List>
-                    {[{text: 'Main', link: '/'}, {text: 'Dialogs', link: '/dialogs'},
-                        {text: 'My comments', link: '/comments'}, {text: 'Settings', link: '/settings'}].map((pair, index) => (
-                        <ListItem button key={pair.text} component={NavLink} to={pair.link} exact={index===0} activeClassName={classes.active}>
-                            <ListItemText primary={pair.text} />
-                        </ListItem>
-                    ))}
-                </List>
+                {isDialogPage ? tabs : navList}
             </div>
         );
 
@@ -168,4 +219,4 @@ class Sidebar extends Component<Props, State> {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Sidebar);
+export default withRouter(withStyles(styles, { withTheme: true })(Sidebar));

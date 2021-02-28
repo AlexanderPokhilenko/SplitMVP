@@ -25,3 +25,14 @@ code {
   border-radius: 50%!important;;
   vertical-align: middle!important;;
 }
+
+.text-cut, .text-cut * {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.text-break {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
