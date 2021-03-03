@@ -1,4 +1,4 @@
-package com.tikaytech.Split;
+package com.tikaytech.Split.servlets;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

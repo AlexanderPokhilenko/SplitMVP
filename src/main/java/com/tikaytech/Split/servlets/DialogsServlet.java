@@ -1,4 +1,8 @@
-package com.tikaytech.Split;
+package com.tikaytech.Split.servlets;
+
+import com.tikaytech.Split.data.Account;
+import com.tikaytech.Split.data.DialogPreview;
+import com.tikaytech.Split.data.Message;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

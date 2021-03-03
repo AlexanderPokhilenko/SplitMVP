@@ -1,4 +1,7 @@
-package com.tikaytech.Split;
+package com.tikaytech.Split.filters;
+
+import com.tikaytech.Split.data.Account;
+import com.tikaytech.Split.data.Accounts;
 
 import javax.servlet.*;
 import javax.servlet.annotation.*;

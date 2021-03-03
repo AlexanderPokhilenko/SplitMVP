@@ -1,5 +1,5 @@
-<%@ page import="com.tikaytech.Split.Account" %>
-<%@ page import="com.tikaytech.Split.Accounts" %>
+<%@ page import="com.tikaytech.Split.data.Account" %>
+<%@ page import="com.tikaytech.Split.data.Accounts" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="d-flex flex-row justify-content-between mt-2 p-1">
     <%

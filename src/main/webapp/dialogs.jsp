@@ -21,7 +21,7 @@
             </div>
             <!-- Dialogs -->
             <div class="tab-pane fade show active" id="nav-dialogs" role="tabpanel" aria-labelledby="nav-dialogs-tab">
-                    <%--@elvariable id="previews" type="com.tikaytech.Split.DialogPreview[]"--%>
+                    <%--@elvariable id="previews" type="com.tikaytech.Split.data.DialogPreview[]"--%>
                 <c:forEach var="preview" items="${previews}">
                     <div class="d-flex flex-row justify-content-between p-1 border border-secondary position-relative">
                         <!-- Profile picture -->
@@ -58,7 +58,7 @@
     </jsp:attribute>
 
     <jsp:body>
-        <%--@elvariable id="interlocutor" type="com.tikaytech.Split.Account"--%>
+        <%--@elvariable id="interlocutor" type="com.tikaytech.Split.data.Account"--%>
         <c:choose>
             <c:when test="${interlocutor == null}">
                 <h3 class="text-center">Choose dialog to start</h3>
@@ -79,7 +79,7 @@
                             <!-- Dialog container -->
                             <div id="messages-container" class="d-flex flex-column p-1 border border-dark border-bottom-0 overflow-auto flex-fill">
                                 <!-- Messages -->
-                                    <%--@elvariable id="messages" type="java.util.ArrayList<com.tikaytech.Split.Message>"--%>
+                                    <%--@elvariable id="messages" type="java.util.ArrayList<com.tikaytech.Split.data.Message>"--%>
                                 <c:forEach var="message" items="${messages}">
                                     <c:choose>
                                         <c:when test="${message.authorId == cookie.accountId.value}">

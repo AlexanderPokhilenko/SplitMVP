@@ -1,4 +1,4 @@
-package com.tikaytech.Split;
+package com.tikaytech.Split.data;
 
 import java.io.Serializable;
 
