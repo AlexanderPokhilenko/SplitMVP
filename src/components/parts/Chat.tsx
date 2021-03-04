@@ -191,7 +191,7 @@ class Chat extends Component<Props, State> {
                             )}
                             <CardContent id="messages-container">
                                 {dialog.messages.map(msg => (
-                                    <MessageItem key={"msg_" + msg.id} message={msg} isDirect={dialog.isDirect} isLeftAligned={this.isCurrentAccount(msg.authorId)}/>
+                                    <MessageItem key={"msg_" + msg.id} message={msg} isDirect={dialog.isDirect} isLeftAligned={!this.isCurrentAccount(msg.authorId)}/>
                                 ))}
                             </CardContent>
                             <CardActions disableSpacing>
