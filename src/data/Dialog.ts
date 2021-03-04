@@ -14,4 +14,15 @@ export default class Dialog {
     public get isDirect(): boolean {
         return this.interlocutors.length <= 2 && this.name === undefined && this.pictureSrc === undefined;
     }
+
+    public get lastMessageDateTime(): Date | null {
+        const messagesCount = this.messages.length;
+        if(messagesCount === 0) {
+            return null;
+        }
+        else {
+            return this.messages[messagesCount - 1].dateTime;
+        }
+    }
 }
+
