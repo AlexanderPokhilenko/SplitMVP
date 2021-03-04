@@ -2,14 +2,15 @@ import Dialog from '../data/Dialog';
 import Message from '../data/Message';
 import AccountsStore from './AccountsStore';
 import RootStore from "./RootStore";
-import {action, computed, observable, ObservableMap} from "mobx";
+import { action, computed, makeObservable, observable, ObservableMap } from "mobx";
 
 export default class DialogsStore {
     @observable private readonly dialogs: ObservableMap<number, Dialog>;
-    private readonly unknownDialog: Dialog;
+    public readonly unknownDialog: Dialog;
     private readonly accountsStore: AccountsStore;
 
     constructor(private readonly rootStore: RootStore) {
+        makeObservable(this);
         this.unknownDialog = new Dialog(-1, [], [], "Unknown dialog");
         this.accountsStore = rootStore.accountsStore;
         const dialogs = [ // temporary
@@ -42,13 +43,14 @@ export default class DialogsStore {
         dialogs.forEach(dialog => this.dialogs.set(dialog.id, dialog));
     }
 
-    @action sendMessage(dialogId: number, text: string): void {
-        if (text === null || text === undefined || text.trim() === '') { return; }
+    @action sendMessageFromDraft(dialogId: number): void {
         const dialog = this.dialogs.get(dialogId) ?? this.unknownDialog;
+        const text = dialog.draftText;
+        if (text === null || text === undefined || text.trim() === '') { return; }
         const messages = dialog.messages;
         const nextMessageId = messages[messages.length - 1].id + 1;
-        const selectedId = this.accountsStore.getSelected().id;
-        const accounts = this.accountsStore.getAccounts();
+        const selectedId = this.accountsStore.selectedAccount.id;
+        const accounts = this.accountsStore.userAccounts;
         const accountId = selectedId !== 0 && dialog.interlocutors.find(acc => acc.id === selectedId) ? selectedId :
             dialog.interlocutors.find(acc => accounts.find(a => a.id === acc.id))?.id ?? 0;
         dialog.messages.push(new Message(nextMessageId, text, accountId));
@@ -61,13 +63,16 @@ export default class DialogsStore {
         dialog.lastReadMessageId = dialog.messages[dialog.messages.length - 1].id;
     }
 
-    @computed getDialogById(id: number): Dialog {
-        console.log(id);
-        console.log(this.dialogs);
+    @action updateDialogDraft(id: number, text: string): void {
+        const dialog = this.getDialogById(id);
+        dialog.draftText = text;
+    }
+
+    getDialogById(id: number): Dialog {
         return this.dialogs.get(id) ?? this.unknownDialog;
     }
 
-    @computed getDialogs(): IterableIterator<Dialog> {
+    @computed get allDialogs(): IterableIterator<Dialog> {
         return this.dialogs.values();
     }
 }

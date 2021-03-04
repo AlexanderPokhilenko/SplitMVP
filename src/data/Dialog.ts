@@ -1,15 +1,19 @@
 import Message from './Message';
 import Account from './Account';
+import { makeObservable, observable } from "mobx";
 
 export default class Dialog {
+    @observable public draftText: string | null;
     constructor(public id: number,
                 public interlocutors: Account[],
                 public messages: Message[],
                 public name?: string,
                 public pictureSrc?: string,
                 public lastReadMessageId: number = 0,
-                public draftText: string | null = null) {
+                draftText: string | null = null) {
         if (lastReadMessageId < 0) { this.lastReadMessageId = messages[messages.length - 1].id; }
+        this.draftText = draftText;
+        makeObservable(this);
     }
     public get isDirect(): boolean {
         return this.interlocutors.length <= 2 && this.name === undefined && this.pictureSrc === undefined;

@@ -49,8 +49,12 @@ const styles = (theme: Theme) =>
         },
         content: {
             flexGrow: 1,
-            padding: theme.spacing(3),
-            paddingTop: 0
+            padding: "0 " + theme.spacing(3) + "px",
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
         },
         active: {
             color: theme.palette.primary.dark,

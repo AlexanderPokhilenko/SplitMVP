@@ -1,4 +1,4 @@
-import {action, computed, observable, ObservableMap, IObservableArray, get, set} from 'mobx';
+import { action, computed, observable, ObservableMap, IObservableArray, get, set, makeObservable } from 'mobx';
 import Account from "../data/Account";
 import RootStore from "./RootStore";
 
@@ -10,6 +10,7 @@ export default class AccountsStore {
     @observable private readonly allAccounts: ObservableMap<number, Account>;
 
     constructor(private readonly rootStore: RootStore) {
+        makeObservable(this);
         this.multiAccount = new Account(0, 'Multi-account');
         this.unknownAccount = new Account(-1, 'Unknown Account');
         this.selected = this.multiAccount;
@@ -28,11 +29,11 @@ export default class AccountsStore {
         set(this.allAccounts, account.id, account);
     }
 
-    @computed getAccountById(id: number): Account {
+    getAccountById(id: number): Account {
         return get(this.allAccounts, id) ?? this.unknownAccount;
     }
 
-    @computed getAccounts(): Account[] {
+    @computed get userAccounts(): Account[] {
         return this.accounts;
     }
 
@@ -40,7 +41,7 @@ export default class AccountsStore {
         this.accounts.push(new Account(this.accounts[this.accounts.length - 1].id, username, imageUrl));
     }
 
-    @computed getSelected(): Account {
+    @computed get selectedAccount(): Account {
         return this.selected;
     }
 

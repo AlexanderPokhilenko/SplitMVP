@@ -1,33 +1,23 @@
 import { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import {inject, observer} from "mobx-react";
-import DialogsStore from "../stores/DialogsStore";
-
-type StoreProps = {
-    DialogsStore: DialogsStore;
-};
+import Chat from "./parts/Chat";
 
 interface RouteProps {
     id?: string;
 }
 
-interface Props extends StoreProps {
-}
+export default class Dialogs extends Component<RouteComponentProps<RouteProps>> {
 
-type CurrentProps = RouteComponentProps<RouteProps> & Props;
-
-@inject("DialogsStore")
-@observer
-export default class Dialogs extends Component<CurrentProps> {
-    static defaultProps = {} as StoreProps;
-
-    constructor(props: CurrentProps) {
+    constructor(props: RouteComponentProps<RouteProps>) {
         super(props);
         this.state = { ...this.state };
     }
 
     render() {
         const id = this.props.match.params.id;
-        return (<h1>Dialogs component works! Id: {id}</h1>);
+        return (id === undefined
+                ? <h1 className="text-center">Choose dialog to start</h1>
+                : <Chat dialogId={+id}/>
+                );
     }
 }

@@ -43,7 +43,7 @@ class DialogPreviews extends Component<Props, State> {
 
     render() {
         const previewsStore = this.props.DialogsPreviewsStore;
-        const previews = previewsStore.getPreviews();
+        const previews = previewsStore.previews;
         const keyPrefix = "dialog_preview_";
 
         return (

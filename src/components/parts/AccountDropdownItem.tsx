@@ -9,11 +9,7 @@ interface Props {
     onClick: (id: number) => void;
 }
 
-interface State {
-    anchorEl: HTMLElement | null;
-}
-
-export default class AccountDropdownItem extends Component<Props, State> {
+export default class AccountDropdownItem extends Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = { ...this.state };

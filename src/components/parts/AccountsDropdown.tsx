@@ -65,7 +65,7 @@ class AccountsDropdown extends Component<Props, State> {
     }
 
     private accountIsSelected(account: Account): boolean {
-        const selectedAccount = this.props.AccountsStore.getSelected();
+        const selectedAccount = this.props.AccountsStore.selectedAccount;
         return account === selectedAccount;
     }
 
@@ -76,7 +76,7 @@ class AccountsDropdown extends Component<Props, State> {
     render() {
         const accountsStore = this.props.AccountsStore;
         const multiAccount = accountsStore.multiAccount;
-        const selectedAccount = accountsStore.getSelected();
+        const selectedAccount = accountsStore.selectedAccount;
         const menuId = "accounts_menu";
         const keyPrefix = "user_account_";
 
@@ -98,7 +98,7 @@ class AccountsDropdown extends Component<Props, State> {
                 >
                     <AccountDropdownItem key={"multi_account_item"} account={multiAccount} onClick={this.selectAccount} specialClassName={this.getSelectedClassName(multiAccount)}/>
                     <Divider />
-                    {accountsStore.getAccounts().map(account =>
+                    {accountsStore.userAccounts.map(account =>
                         <AccountDropdownItem key={keyPrefix + account.id} account={account} onClick={this.selectAccount} specialClassName={this.getSelectedClassName(account)}/>)}
                     <Divider />
                     <MenuItem button key={"log_out_item"} onClick={this.logOut} component={Link} to={"/sign"}>Log Out</MenuItem>
