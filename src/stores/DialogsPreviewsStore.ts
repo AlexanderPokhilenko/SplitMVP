@@ -35,6 +35,10 @@ export default class DialogsPreviewsStore {
         return previews;
     }
 
+    @computed public get totalUnreadMessages(): number {
+        return this.previews.reduce((total, preview) => total + preview.unreadMessagesCount, 0);
+    }
+
     public getPreviewFromDialog(dialog: Dialog): DialogPreview {
         const lastMessage = dialog.messages[dialog.messages.length - 1];
         const lastAuthor = this.accountsStore.getAccountById(lastMessage.authorId);

@@ -1,5 +1,15 @@
 import { Component, Fragment } from "react";
-import {Avatar, ListItem, Typography, ListItemText, createStyles, Theme, withStyles, Box} from "@material-ui/core";
+import {
+    Avatar,
+    ListItem,
+    Typography,
+    ListItemText,
+    createStyles,
+    Theme,
+    withStyles,
+    Box,
+    Badge
+} from "@material-ui/core";
 import DialogPreview from "../../data/DialogPreview";
 import {NavLink} from "react-router-dom";
 import clsx from 'clsx';
@@ -10,7 +20,8 @@ const styles = (theme: Theme) =>
             display: 'inline'
         },
         flexFill: {
-            flex: '1 1 auto!important'
+            flex: '1 1 auto!important',
+            minWidth: 0
         },
         bold: {
             fontWeight: 'bold'
@@ -77,7 +88,9 @@ class DialogPreviewItem extends Component<Props, State> {
         return (
             <ListItem alignItems="flex-start" button component={NavLink} to={"/dialogs/" + preview.id} exact activeClassName="Mui-selected">
                 <Avatar className="thumbnail " alt={preview.name} src={preview.pictureSrc} />
-                <ListItemText className="text-cut" primary={header} secondary={content}/>
+                <Badge className={this.props.classes.flexFill} badgeContent={preview.unreadMessagesCount} color="secondary" overlap="circle" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                    <ListItemText className="text-cut" primary={header} secondary={content}/>
+                </Badge>
             </ListItem>
         );
     }

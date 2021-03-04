@@ -131,8 +131,14 @@ class Chat extends Component<Props, State> {
         lastReadMessage.scrollIntoView();
     }
 
+    componentDidMount() {
+        this.props.DialogsStore.markDialogAsRead(this.props.dialogId);
+        this.scrollToLastRead();
+    }
+
     componentDidUpdate(prevProps: Props, prevState: State) {
         if(this.props.dialogId !== prevProps.dialogId){
+            this.props.DialogsStore.markDialogAsRead(this.props.dialogId);
             this.props.DialogsStore.updateDialogDraft(prevProps.dialogId, prevState.draft);
             const currentDialog = this.props.DialogsStore.getDialogById(this.props.dialogId);
             this.setState({draft: currentDialog?.draftText ?? ""});

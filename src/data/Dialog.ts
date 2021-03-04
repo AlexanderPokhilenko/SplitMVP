@@ -4,14 +4,15 @@ import { makeObservable, observable } from "mobx";
 
 export default class Dialog {
     @observable public draftText: string | null;
+    @observable public lastReadMessageId: number;
     constructor(public id: number,
                 public interlocutors: Account[],
                 public messages: Message[],
                 public name?: string,
                 public pictureSrc?: string,
-                public lastReadMessageId: number = 0,
+                lastReadMessageId: number = 0,
                 draftText: string = "") {
-        if (lastReadMessageId < 0) { this.lastReadMessageId = messages[messages.length - 1].id; }
+        this.lastReadMessageId = lastReadMessageId >= 0 ? lastReadMessageId : messages[messages.length - 1].id;
         this.draftText = draftText;
         makeObservable(this);
     }

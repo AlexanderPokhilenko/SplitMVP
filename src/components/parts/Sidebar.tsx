@@ -12,10 +12,12 @@ import Typography from '@material-ui/core/Typography';
 import { Theme, createStyles, withStyles } from '@material-ui/core/styles';
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 import AccountsDropdown from "./AccountsDropdown";
-import {IconButton, Tabs, Tab, Box} from "@material-ui/core";
+import {IconButton, Tabs, Tab, Box, Badge} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import DialogPreviews from "./DialogPreviews";
 import { matchPath } from 'react-router';
+import { inject, observer } from "mobx-react";
+import DialogsPreviewsStore from '../../stores/DialogsPreviewsStore';
 
 const drawerWidth = 240;
 
@@ -67,8 +69,11 @@ const styles = (theme: Theme) =>
         }
     });
 
+type StoreProps = {
+    DialogsPreviewsStore: DialogsPreviewsStore;
+};
 
-interface Props {
+interface Props extends StoreProps {
     classes: any;
     theme: any;
 }
@@ -101,7 +106,11 @@ class TabPanel extends Component<{value: number, index: number}> {
     }
 }
 
+@inject("DialogsPreviewsStore")
+@observer
 class Sidebar extends Component<CurrentProps, State> {
+    static defaultProps = {} as StoreProps;
+
     constructor(props: CurrentProps) {
         super(props);
         this.state = { ...this.state, tabIndex: 1 };
@@ -128,12 +137,20 @@ class Sidebar extends Component<CurrentProps, State> {
 
         const navList = (
             <List>
-                {[{text: 'Main', link: '/'}, {text: 'Dialogs', link: '/dialogs'},
-                    {text: 'My comments', link: '/comments'}, {text: 'Settings', link: '/settings'}].map((pair, index) => (
-                    <ListItem button key={pair.text} component={NavLink} to={pair.link} exact={index===0} activeClassName={classes.active}>
-                        <ListItemText primary={pair.text} />
-                    </ListItem>
-                ))}
+                <ListItem button key={"main_nav_item"} component={NavLink} to={'/'} exact activeClassName={classes.active}>
+                    <ListItemText primary={"Main"} />
+                </ListItem>
+                <ListItem button key={"dialogs_nav_item"} component={NavLink} to={'/dialogs'} activeClassName={classes.active}>
+                    <Badge badgeContent={this.props.DialogsPreviewsStore.totalUnreadMessages} color="secondary">
+                        <ListItemText primary={"Dialogs"} />
+                    </Badge>
+                </ListItem>
+                <ListItem button key={"comments_nav_item"} component={NavLink} to={'/comments'} activeClassName={classes.active}>
+                    <ListItemText primary={"My comments"} />
+                </ListItem>
+                <ListItem button key={"settings_nav_item"} component={NavLink} to={'/settings'} activeClassName={classes.active}>
+                    <ListItemText primary={"Settings"} />
+                </ListItem>
             </List>
         );
 
