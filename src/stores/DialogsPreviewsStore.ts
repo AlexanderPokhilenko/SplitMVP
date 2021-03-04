@@ -24,7 +24,7 @@ export default class DialogsPreviewsStore {
 
     @computed public get previews(): DialogPreview[] {
         const previews = [];
-        const dialogs = Array.from(this.dialogsStore.allDialogs)
+        const dialogs = this.dialogsStore.allDialogs
             .sort((d1, d2) =>
                 (d2.lastMessageDateTime?.getTime() ?? 0) - (d1.lastMessageDateTime?.getTime() ?? 0));
         for (const dialog of dialogs) {

@@ -55,7 +55,7 @@ export default class DialogsStore {
             dialog.interlocutors.find(acc => accounts.find(a => a.id === acc.id))?.id ?? 0;
         dialog.messages.push(new Message(nextMessageId, text, accountId));
         dialog.lastReadMessageId = nextMessageId;
-        dialog.draftText = null;
+        dialog.draftText = "";
     }
 
     @action markDialogAsRead(id: number): void {
@@ -65,14 +65,14 @@ export default class DialogsStore {
 
     @action updateDialogDraft(id: number, text: string): void {
         const dialog = this.getDialogById(id);
-        dialog.draftText = text;
+        dialog.draftText = text ?? "";
     }
 
     getDialogById(id: number): Dialog {
         return this.dialogs.get(id) ?? this.unknownDialog;
     }
 
-    @computed get allDialogs(): IterableIterator<Dialog> {
-        return this.dialogs.values();
+    @computed get allDialogs(): Dialog[] {
+        return Array.from(this.dialogs.values());
     }
 }

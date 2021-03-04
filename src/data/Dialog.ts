@@ -10,7 +10,7 @@ export default class Dialog {
                 public name?: string,
                 public pictureSrc?: string,
                 public lastReadMessageId: number = 0,
-                draftText: string | null = null) {
+                draftText: string = "") {
         if (lastReadMessageId < 0) { this.lastReadMessageId = messages[messages.length - 1].id; }
         this.draftText = draftText;
         makeObservable(this);

@@ -23,22 +23,21 @@ const stores = {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
-      <Provider {...stores}>
-          <BrowserRouter>
-              <Sidebar>
-                  <Switch>
-                      <Route exact path="/" component={News} />
-                      <Route path="/dialogs/:id(\d+)?" component={Dialogs} />
-                      <Route path="/settings" component={Settings} />
-                      <Route path="/comments" component={Comments} />
-                      <Route path="/sign" component={Sign} />
-                      <Route component={NotFound} />
-                  </Switch>
-              </Sidebar>
-          </BrowserRouter>
-      </Provider>
-  </React.StrictMode>,
+    <Provider {...stores}>
+        <BrowserRouter>
+            <Sidebar>
+                <Switch>
+                    <Route exact path="/" component={News} />
+                    <Route path="/dialogs/:id(\d+)?" component={Dialogs} />
+                    <Route path="/settings" component={Settings} />
+                    <Route path="/comments" component={Comments} />
+                    <Route path="/sign" component={Sign} />
+                    <Route component={NotFound} />
+                </Switch>
+            </Sidebar>
+        </BrowserRouter>
+    </Provider>
+    ,
   document.getElementById('root')
 );
 
