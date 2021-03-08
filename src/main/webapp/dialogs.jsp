@@ -2,6 +2,10 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--@elvariable id="previews" type="java.util.List<com.tikaytech.Split.data.DialogPreview>"--%>
+<%--@elvariable id="currentPreview" type="com.tikaytech.Split.data.DialogPreview"--%>
+<%--@elvariable id="interlocutors" type="java.util.List<com.tikaytech.Split.data.entities.Account>"--%>
+<%--@elvariable id="messages" type="java.util.List<com.tikaytech.Split.data.entities.Message>"--%>
 <t:mainWrapper>
     <jsp:attribute name="sidebarElements">
         <jsp:include page="WEB-INF/parts/sidebarTop.jsp"/>
@@ -15,34 +19,42 @@
             <!-- Pages -->
             <div class="tab-pane fade" id="nav-pages" role="tabpanel" aria-labelledby="nav-pages-tab">
                 <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">Main</a>
-                <a href="./dialogs" class="list-group-item list-group-item-action bg-light">Dialogs <span class="badge badge-danger" id="newDialogsSpan">5</span></a>
-                <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">My comments <span class="badge badge-danger" id="newAnswersSpan">3</span></a>
+                <a href="./dialogs" class="list-group-item list-group-item-action bg-light">Dialogs</a>
+                <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">My comments</a>
                 <a href="./settings.html" class="list-group-item list-group-item-action bg-light">Settings</a>
             </div>
             <!-- Dialogs -->
             <div class="tab-pane fade show active" id="nav-dialogs" role="tabpanel" aria-labelledby="nav-dialogs-tab">
-                    <%--@elvariable id="previews" type="com.tikaytech.Split.data.DialogPreview[]"--%>
                 <c:forEach var="preview" items="${previews}">
                     <div class="d-flex flex-row justify-content-between p-1 border border-secondary position-relative">
                         <!-- Profile picture -->
-                        <div class="image mr-2"><img src="${preview.interlocutor.imageUrl}" class="thumbnail rounded-circle" alt="Interlocutor's profile picture"/></div>
+                        <div class="image mr-2"><img src="${preview.pictureSrc}" class="thumbnail rounded-circle" alt="Interlocutor's profile picture"/></div>
                         <div class="d-flex flex-column flex-fill justify-content-between  overflow-auto">
-                            <div>
+                            <div class="d-flex flex-row">
                                 <!-- Username -->
                                 <span class="flex-fill text-cut font-weight-bold">
-                                    <c:out value="${preview.interlocutor.username}"/>
+                                    <c:out value="${preview.name}"/>
                                 </span>
-                                <fmt:formatDate value="${preview.date}" pattern="hh:mm:ss dd.MM.yyyy" var="fullDate"/>
                                 <span class="float-right">
-                                    <fmt:formatDate value="${preview.date}" pattern="hh:mm"/>
+                                    <c:out value="${preview.dateTimeStr}"/>
                                 </span>
                             </div>
                             <span class="flex-fill text-cut">
-                                <c:if test="${cookie.accountId.value == preview.lastSenderId}"> <strong>You:</strong> </c:if>
+                                <c:choose>
+                                    <c:when test="${cookie.accountId.value == preview.lastAuthor.id}">
+                                        <strong>You:</strong>
+                                    </c:when>
+                                    <c:when test="${!(interlocutors.size() == 1)}">
+                                        <strong><c:out value="${preview.lastAuthor.username}"/>:</strong>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <strong><c:out value="${preview.lastAuthor.username}"/>:</strong>
+                                    </c:otherwise>
+                                </c:choose>
                                 <c:out value="${preview.text}"/>
                             </span>
                         </div>
-                        <a href="./dialogs?id=${preview.id}" class="stretched-link" title="Sent at: ${fullDate}"></a>
+                        <a href="./dialogs?id=${preview.id}" class="stretched-link"></a>
                     </div>
                 </c:forEach>
             </div>
@@ -58,9 +70,8 @@
     </jsp:attribute>
 
     <jsp:body>
-        <%--@elvariable id="interlocutor" type="com.tikaytech.Split.data.Account"--%>
         <c:choose>
-            <c:when test="${interlocutor == null}">
+            <c:when test="${interlocutors == null}">
                 <h3 class="text-center">Choose dialog to start</h3>
             </c:when>
             <c:otherwise>
@@ -69,17 +80,30 @@
                         <div class="col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8 border border-dark p-0 d-flex flex-column h-100">
                             <!-- Dialog header -->
                             <div class="d-flex flex-row justify-content-between p-1 border border-dark bg-light">
-                                <!-- Profile picture -->
-                                <div class="image mr-2"><img src="${interlocutor.imageUrl}" class="thumbnail rounded-circle" alt="Current interlocutor's profile picture"/></div>
-                                <!-- Username -->
+                                <!-- Dialog picture -->
+                                <div class="image mr-2"><img src="${currentPreview.pictureSrc}" class="thumbnail rounded-circle" alt="Current interlocutor's profile picture"/></div>
+                                <!-- Name -->
                                 <span class="flex-fill align-self-center font-weight-bold">
-                                    <c:out value="${interlocutor.username}"/>
+                                    <c:out value="${currentPreview.name}"/>
                                 </span>
+                                <c:if test="${!currentPreview.direct}">
+                                    <!-- Members -->
+                                    <button type="button" class="btn dropdown-toggle fit-cell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="right"></button>
+                                    <div class="dropdown-menu block-container dropdown-menu-right">
+                                        <c:forEach var="interlocutor" items="${interlocutors}">
+                                        <div class="dropdown-item d-flex flex-row justify-content-between mt-2 px-2 position-relative">
+                                            <div class="image mr-3">
+                                                <img src="${interlocutor.imageUrl}" class="small-thumbnail rounded-circle" alt="Account picture"/>
+                                            </div>
+                                            <span class="flex-fill align-self-center ${interlocutor.id == cookie.accountId.value ? "font-weight-bold" : ""}"><c:out value="${interlocutor.username}"/></span>
+                                        </div>
+                                        </c:forEach>
+                                    </div>
+                                </c:if>
                             </div>
                             <!-- Dialog container -->
                             <div id="messages-container" class="d-flex flex-column p-1 border border-dark border-bottom-0 overflow-auto flex-fill">
                                 <!-- Messages -->
-                                    <%--@elvariable id="messages" type="java.util.ArrayList<com.tikaytech.Split.data.Message>"--%>
                                 <c:forEach var="message" items="${messages}">
                                     <c:choose>
                                         <c:when test="${message.authorId == cookie.accountId.value}">
@@ -91,11 +115,19 @@
                                     </c:choose>
                                     <fmt:formatDate value="${message.date}" pattern="hh:mm:ss dd.MM.yyyy" var="fullDate"/>
                                     <div class="w-75 p-2 my-1 rounded border border-dark ${messageAlign}">
+                                        <c:if test="${!currentPreview.direct}">
+                                                <span class="text-break d-block">
+                                                    <%--@elvariable id="messageAuthor" type="com.tikaytech.Split.data.entities.Account"--%>
+                                                    <c:set var="messageAuthor" value="${interlocutors.stream().filter(a -> a.id == message.authorId).findFirst().get()}" />
+                                                    <img class="small-thumbnail rounded-circle" alt="Author profile picture" src="${messageAuthor.imageUrl}">
+                                                    <strong><c:out value="${messageAuthor.username}"/></strong>
+                                                </span>
+                                        </c:if>
                                         <span class="text-break">
                                             <c:out value="${message.text}"/>
                                         </span>
                                         <span class="float-right" title="${fullDate}">
-                                            <fmt:formatDate value="${message.date}" pattern="hh:mm"/>
+                                            <fmt:formatDate value="${message.date}" pattern="HH:mm"/>
                                         </span>
                                     </div>
                                 </c:forEach>

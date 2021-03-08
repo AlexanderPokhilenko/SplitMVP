@@ -5,8 +5,8 @@
     <jsp:attribute name="sidebarElements">
       <jsp:include page="WEB-INF/parts/sidebarTop.jsp"/>
       <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">Main</a>
-      <a href="dialogs" class="list-group-item list-group-item-action bg-light">Dialogs <span class="badge badge-danger" id="newDialogsSpan">5</span></a>
-      <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">My comments <span class="badge badge-danger" id="newAnswersSpan">3</span></a>
+      <a href="dialogs" class="list-group-item list-group-item-action bg-light">Dialogs</a>
+      <a href="./index.jsp" class="list-group-item list-group-item-action bg-light">My comments</a>
       <a href="./settings.html" class="list-group-item list-group-item-action bg-light">Settings</a>
     </jsp:attribute>
 

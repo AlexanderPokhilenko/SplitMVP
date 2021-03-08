@@ -1,18 +1,22 @@
 package com.tikaytech.Split.data;
 
+import com.tikaytech.Split.data.entities.Account;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Accounts implements Serializable {
     private long selectedId;
-    private Account[] array;
+    private List<Account> accounts;
 
     public Accounts() {
-        this(0, new Account[] {new Account()});
+        this(0, new ArrayList<Account>(1) {{ new Account(); }});
     }
 
-    public Accounts(long selectedId, Account[] accounts) {
+    public Accounts(long selectedId, List<Account> accounts) {
         this.selectedId = selectedId;
-        array = accounts;
+        this.accounts = accounts;
     }
 
     public long getSelectedId() {
@@ -23,18 +27,18 @@ public class Accounts implements Serializable {
         this.selectedId = selectedId;
     }
 
-    public Account[] getArray() {
-        return array;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setArray(Account[] array) {
-        this.array = array;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     public Account getSelected() {
-        for (Account account : array) {
+        for (Account account : accounts) {
             if (account.getId() == selectedId) return account;
         }
-        return new Account(0, "Multi-account", "./icon.png");
+        return new Account(0, "Multi-account", "./icon.png", 0);
     }
 }

@@ -1,4 +1,4 @@
-<%@ page import="com.tikaytech.Split.data.Account" %>
+<%@ page import="com.tikaytech.Split.data.entities.Account" %>
 <%@ page import="com.tikaytech.Split.data.Accounts" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="d-flex flex-row justify-content-between mt-2 p-1">
@@ -18,7 +18,7 @@
         <a href="./accounts?id=0&redirect=<%=redirectUrl%>" class="dropdown-item <%=selected.getId() == 0L ? "font-weight-bold" : ""%>" data-toggle="tooltip" data-placement="right" title="Operate from multi-account">Multi-account</a>
         <div class="dropdown-divider"></div>
         <!-- Accounts part -->
-        <% for (Account account : accounts.getArray()) { %>
+        <% for (Account account : accounts.getAccounts()) { %>
             <div class="dropdown-item d-flex flex-row justify-content-between mt-2 px-2 position-relative">
             <div class="image mr-3">
                 <img src="<%=account.getImageUrl()%>" class="small-thumbnail rounded-circle" alt="Account picture"/>
