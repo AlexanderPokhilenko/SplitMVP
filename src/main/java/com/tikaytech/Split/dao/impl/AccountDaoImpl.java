@@ -5,6 +5,7 @@ import com.tikaytech.Split.dao.AbstractDao;
 import com.tikaytech.Split.dao.AccountDao;
 import com.tikaytech.Split.data.entities.Account;
 
+import javax.ejb.Stateless;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Stateless
 public class AccountDaoImpl extends AbstractDao<Long, Account> implements AccountDao {
     protected final String selectByMultiAccountIdSql;
     protected final String selectByDialogIdSql;

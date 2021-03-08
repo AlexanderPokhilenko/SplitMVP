@@ -5,6 +5,7 @@ import com.tikaytech.Split.dao.AbstractDao;
 import com.tikaytech.Split.dao.MessageDao;
 import com.tikaytech.Split.data.entities.Message;
 
+import javax.ejb.Stateless;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Stateless
 public class MessageDaoImpl extends AbstractDao<Long, Message> implements MessageDao {
     protected final String selectByDialogIdSql;
     protected final String selectLastInDialogSql;

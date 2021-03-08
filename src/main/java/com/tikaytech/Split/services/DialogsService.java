@@ -4,9 +4,11 @@ import com.tikaytech.Split.data.DialogPreview;
 import com.tikaytech.Split.data.entities.Account;
 import com.tikaytech.Split.data.entities.Message;
 
+import javax.ejb.Remote;
 import java.util.List;
 import java.util.Optional;
 
+@Remote
 public interface DialogsService {
     List<Message> getDialogMessages(long dialogId);
     Optional<DialogPreview> getPreviewByDialogId(long dialogId, long multiAccountId);

@@ -9,6 +9,7 @@ import com.tikaytech.Split.data.entities.Message;
 import com.tikaytech.Split.services.DialogsService;
 import com.tikaytech.Split.services.impl.DialogsServiceImpl;
 
+import javax.ejb.EJB;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -17,12 +18,12 @@ import java.util.*;
 
 @WebServlet(name = "dialogsServlet", value = "/dialogs")
 public class DialogsServlet extends HttpServlet {
+    @EJB
     private DialogsService dialogsService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        dialogsService = new DialogsServiceImpl(new AccountDaoImpl(), new DialogDaoImpl(), new MessageDaoImpl());
     }
 
     @Override

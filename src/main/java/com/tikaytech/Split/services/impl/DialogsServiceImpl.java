@@ -9,6 +9,8 @@ import com.tikaytech.Split.data.entities.Dialog;
 import com.tikaytech.Split.data.entities.Message;
 import com.tikaytech.Split.services.DialogsService;
 
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -18,18 +20,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Stateless
 public class DialogsServiceImpl implements DialogsService {
-    private final AccountDao accountDao;
-    private final DialogDao dialogDao;
-    private final MessageDao messageDao;
+    @EJB
+    private AccountDao accountDao;
+    @EJB
+    private DialogDao dialogDao;
+    @EJB
+    private MessageDao messageDao;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-
-    public DialogsServiceImpl(AccountDao accountDao, DialogDao dialogDao, MessageDao messageDao) {
-        this.accountDao = accountDao;
-        this.dialogDao = dialogDao;
-        this.messageDao = messageDao;
-    }
 
     @Override
     public List<Message> getDialogMessages(long dialogId) {

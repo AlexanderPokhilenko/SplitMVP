@@ -1,13 +1,14 @@
 version: '2'
 
 services:
-  tomcat:
-    image: tomcat:9.0.43-jdk8-openjdk
+  glassfish:
+    image: glassfish
     ports:
       - "127.0.0.1:8080:8080"
-    container_name: tomcat
+      - "127.0.0.1:4848:4848"
+    container_name: glassfish
     volumes:
-      - ./target:/usr/local/tomcat/webapps
+      - ./target:/usr/local/glassfish4/glassfish/domains/domain1/autodeploy/
   mypostgres:
     image: postgres
     ports:
