@@ -6,7 +6,7 @@ import javax.ejb.Remote;
 import java.util.List;
 
 @Remote
-public interface DialogJpaRepository extends JpaRepository<Long, Dialog> {
+public interface DialogsJpaRepository extends JpaRepository<Long, Dialog> {
     List<Dialog> getByAccountId(long accountId);
     List<Dialog> getByMultiAccountId(long multiAccountId);
     boolean isMemberOfDialog(long accountId, long dialogId);

@@ -1,8 +1,8 @@
 package com.tikaytech.Split.services.impl;
 
-import com.tikaytech.Split.dao.AccountJpaRepository;
-import com.tikaytech.Split.dao.DialogJpaRepository;
-import com.tikaytech.Split.dao.MessageJpaRepository;
+import com.tikaytech.Split.dao.AccountsJpaRepository;
+import com.tikaytech.Split.dao.DialogsJpaRepository;
+import com.tikaytech.Split.dao.MessagesJpaRepository;
 import com.tikaytech.Split.data.DialogPreview;
 import com.tikaytech.Split.data.entities.Account;
 import com.tikaytech.Split.data.entities.Dialog;
@@ -20,14 +20,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Stateless
+@Stateless(name = "DialogsService")
 public class DialogsServiceImpl implements DialogsService {
     @EJB
-    private AccountJpaRepository accountDao;
+    private AccountsJpaRepository accountDao;
     @EJB
-    private DialogJpaRepository dialogDao;
+    private DialogsJpaRepository dialogDao;
     @EJB
-    private MessageJpaRepository messageDao;
+    private MessagesJpaRepository messageDao;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
@@ -38,12 +38,12 @@ public class DialogsServiceImpl implements DialogsService {
 
     private DialogPreview getPreviewFromDialog(Dialog dialog, long multiAccountId) {
         boolean isDirect = dialog.getName() == null;
-        Message lastMessage = messageDao.getLast(dialog.getId()).orElseGet(this::createStubMessage);
-        Account lastAuthor = accountDao.get(lastMessage.getAuthorId()).orElseGet(this::createStubAccount);
+        Message lastMessage = Optional.ofNullable(messageDao.getLast(dialog.getId())).orElseGet(this::createStubMessage);
+        Account lastAuthor = Optional.ofNullable(accountDao.get(lastMessage.getAuthorId())).orElseGet(this::createStubAccount);
         String previewName;
         String imageUrl;
         if (isDirect){
-            Account interlocutor = accountDao.getDirectInterlocutor(dialog.getId(), multiAccountId).orElseGet(this::createStubAccount);
+            Account interlocutor = Optional.ofNullable(accountDao.getDirectInterlocutor(dialog.getId(), multiAccountId)).orElseGet(this::createStubAccount);
             previewName = interlocutor.getUsername();
             imageUrl = interlocutor.getImageUrl();
         } else {
@@ -62,7 +62,7 @@ public class DialogsServiceImpl implements DialogsService {
 
     @Override
     public Optional<DialogPreview> getPreviewByDialogId(long dialogId, long multiAccountId) {
-        return dialogDao.get(dialogId).map((dialog) -> getPreviewFromDialog(dialog, multiAccountId));
+        return Optional.ofNullable(dialogDao.get(dialogId)).map((dialog) -> getPreviewFromDialog(dialog, multiAccountId));
     }
 
     private Account createStubAccount() {
@@ -94,7 +94,7 @@ public class DialogsServiceImpl implements DialogsService {
 
     @Override
     public List<DialogPreview> getPreviewsForAccount(long accountId) {
-        long multiAccountId = accountDao.get(accountId).orElseGet(this::createStubAccount).getMultiAccountId();
+        long multiAccountId = Optional.ofNullable(accountDao.get(accountId)).orElseGet(this::createStubAccount).getMultiAccountId();
         List<Dialog> dialogs = dialogDao.getByAccountId(accountId);
         return getPreviewsFromDialogs(dialogs, multiAccountId);
     }
@@ -123,6 +123,6 @@ public class DialogsServiceImpl implements DialogsService {
 
     @Override
     public Optional<Long> getIdOfFirstMemberOfDialog(long dialogId, long multiAccountId) {
-        return accountDao.getFirstMemberOfDialog(dialogId, multiAccountId).map(Account::getId);
+        return Optional.ofNullable(accountDao.getFirstMemberOfDialog(dialogId, multiAccountId)).map(Account::getId);
     }
 }

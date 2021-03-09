@@ -2,67 +2,48 @@ package com.tikaytech.Split.dao;
 
 import com.tikaytech.Split.data.WithId;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class AbstractJpaRepository<K, E extends WithId<K>> implements JpaRepository<K, E> {
-    protected static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-
-    protected static EntityManager createEntityManager() {
-        return entityManagerFactory.createEntityManager();
-    }
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public abstract class AbstractJpaRepository<K, E extends WithId<K> & Serializable> implements JpaRepository<K, E> {
+    @PersistenceContext(name = "default", type = PersistenceContextType.TRANSACTION)
+    protected EntityManager entityManager;
 
     protected abstract Class<E> getEntityType();
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     @Override
-    public Optional<E> get(K key) {
-        EntityManager em = createEntityManager();
-        em.getTransaction().begin();
-        E entity = em.find(getEntityType(), key);
-        em.getTransaction().commit();
-        em.close();
-        return Optional.ofNullable(entity);
+    public E get(K key) {
+        return entityManager.find(getEntityType(), key);
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     @Override
     public List<E> getAll() {
-        EntityManager em = createEntityManager();
-        em.getTransaction().begin();
-        List<E> list = em.createQuery("select e from " + getEntityType().getName() + " e", getEntityType()).getResultList();
-        em.getTransaction().commit();
-        em.close();
-        return list;
+        return entityManager.createQuery("select e from " + getEntityType().getName() + " e", getEntityType()).getResultList();
     }
 
     @Override
     public boolean create(E entity) {
-        EntityManager em = createEntityManager();
-        em.getTransaction().begin();
-        em.persist(entity);
-        em.getTransaction().commit();
-        em.close();
+        entityManager.persist(entity);
         return true;
     }
 
     @Override
     public boolean update(E entity) {
-        EntityManager em = createEntityManager();
-        em.getTransaction().begin();
-        em.merge(entity);
-        em.getTransaction().commit();
-        em.close();
+        entityManager.merge(entity);
         return true;
     }
 
     @Override
     public boolean delete(K key) {
-        EntityManager em = createEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.find(getEntityType(), key));
-        em.getTransaction().commit();
-        em.close();
+        entityManager.remove(entityManager.find(getEntityType(), key));
         return true;
     }
 }

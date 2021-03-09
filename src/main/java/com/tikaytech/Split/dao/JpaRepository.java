@@ -2,11 +2,11 @@ package com.tikaytech.Split.dao;
 
 import com.tikaytech.Split.data.WithId;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
-public interface JpaRepository<K, E extends WithId<K>> {
-    Optional<E> get(K key);
+public interface JpaRepository<K, E extends WithId<K> & Serializable> {
+    E get(K key);
     List<E> getAll();
     boolean create(E entity);
     boolean update(E entity);
