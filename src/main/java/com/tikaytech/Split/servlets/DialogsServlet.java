@@ -1,13 +1,8 @@
 package com.tikaytech.Split.servlets;
 
 import com.tikaytech.Split.CookiesTools;
-import com.tikaytech.Split.dao.impl.AccountDaoImpl;
-import com.tikaytech.Split.dao.impl.DialogDaoImpl;
-import com.tikaytech.Split.dao.impl.MessageDaoImpl;
 import com.tikaytech.Split.data.DialogPreview;
-import com.tikaytech.Split.data.entities.Message;
 import com.tikaytech.Split.services.DialogsService;
-import com.tikaytech.Split.services.impl.DialogsServiceImpl;
 
 import javax.ejb.EJB;
 import javax.servlet.*;

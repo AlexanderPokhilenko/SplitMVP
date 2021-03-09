@@ -1,8 +1,8 @@
 package com.tikaytech.Split.services.impl;
 
-import com.tikaytech.Split.dao.AccountDao;
-import com.tikaytech.Split.dao.DialogDao;
-import com.tikaytech.Split.dao.MessageDao;
+import com.tikaytech.Split.dao.AccountJpaRepository;
+import com.tikaytech.Split.dao.DialogJpaRepository;
+import com.tikaytech.Split.dao.MessageJpaRepository;
 import com.tikaytech.Split.data.DialogPreview;
 import com.tikaytech.Split.data.entities.Account;
 import com.tikaytech.Split.data.entities.Dialog;
@@ -23,11 +23,11 @@ import java.util.Optional;
 @Stateless
 public class DialogsServiceImpl implements DialogsService {
     @EJB
-    private AccountDao accountDao;
+    private AccountJpaRepository accountDao;
     @EJB
-    private DialogDao dialogDao;
+    private DialogJpaRepository dialogDao;
     @EJB
-    private MessageDao messageDao;
+    private MessageJpaRepository messageDao;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 

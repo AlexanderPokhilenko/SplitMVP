@@ -1,19 +1,14 @@
 package com.tikaytech.Split.filters;
 
 import com.tikaytech.Split.CookiesTools;
-import com.tikaytech.Split.dao.impl.AccountDaoImpl;
-import com.tikaytech.Split.data.entities.Account;
 import com.tikaytech.Split.data.Accounts;
 import com.tikaytech.Split.services.AccountsService;
-import com.tikaytech.Split.services.impl.AccountsServiceImpl;
 
 import javax.ejb.EJB;
 import javax.servlet.*;
 import javax.servlet.annotation.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
 
 @WebFilter(filterName = "accountsFilter", value = {"/*"})
 public class AccountsFilter implements Filter {

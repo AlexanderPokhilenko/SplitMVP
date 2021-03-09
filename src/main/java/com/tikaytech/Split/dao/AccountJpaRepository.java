@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Remote
-public interface AccountDao extends Dao<Long, Account> {
+public interface AccountJpaRepository extends JpaRepository<Long, Account> {
     List<Account> getByMultiAccountId(long multiAccountId);
     List<Account> getInterlocutors(long dialogId);
     Optional<Account> getDirectInterlocutor(long dialogId, long multiAccountId);

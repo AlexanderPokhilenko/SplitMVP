@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Remote
-public interface MessageDao extends Dao<Long, Message> {
+public interface MessageJpaRepository extends JpaRepository<Long, Message> {
     List<Message> getByDialogId(long dialogId);
     Optional<Message> getLast(long dialogId);
 }
