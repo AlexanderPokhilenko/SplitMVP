@@ -16,6 +16,7 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@types/vue-material": "git+https://github.com/calebsander/vue-material-types.git",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

@@ -1,23 +1,45 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "News",
+    component: () => import("../views/News.vue")
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/sign",
+    name: "Sign",
+    component: () => import("../views/Sign.vue")
+  },
+  {
+    path: "/comments",
+    name: "Comments",
+    component: () => import("../views/Comments.vue")
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: () => import("../views/Settings.vue")
+  },
+  {
+    path: "/dialogs/:id?",
+    name: "Dialogs",
+    component: () => import("../views/Dialogs.vue"),
+    props: route => {
+      const id = Number.parseInt(route.params.id, 10);
+      if (Number.isNaN(id)) {
+        return null;
+      }
+      return { id };
+    }
+  },
+  {
+    path: "*",
+    name: "NotFound",
+    component: () => import("../views/NotFound.vue")
   }
 ];
 
