@@ -19,4 +19,9 @@ export default class App extends Vue {}
   min-height: 100vh;
   height: 100%;
 }
+
+.fill {
+  width: 100% !important;
+  height: 100% !important;
+}
 </style>

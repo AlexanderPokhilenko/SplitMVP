@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import accounts from "./modules/accounts";
+import { RootState } from "./states";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export default new Vuex.Store<RootState>({
   state: {},
   mutations: {},
   actions: {},
-  modules: {}
+  modules: { accounts }
 });
