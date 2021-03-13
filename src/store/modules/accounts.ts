@@ -9,7 +9,7 @@ const accountsArr = [
   new Account(3, "Third Username", "https://i.imgur.com/WfdkN3o.jpg")
 ];
 
-const allAccounts: { [id: number]: Account } = accountsArr.reduce(
+export const allAccounts: { [id: number]: Account } = accountsArr.reduce(
   (dict, acc) => ({ ...dict, [acc.id]: acc }),
   {}
 ); // temporary

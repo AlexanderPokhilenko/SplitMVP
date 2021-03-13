@@ -7,3 +7,4 @@ export default class Account {
 }
 
 export const multiAccount = new Account(0, "Multi-account", "/icon.png");
+export const unknownAccount = new Account(-1, "Unknown Account", "/icon.png");

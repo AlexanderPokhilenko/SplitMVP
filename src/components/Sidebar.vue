@@ -28,7 +28,7 @@
               </md-menu-item>
               <md-divider />
               <md-menu-item
-                v-for="account in this.accounts"
+                v-for="account in accounts"
                 :key="account.id"
                 :class="{ selected: selectedAccount === account }"
                 @click="selectAccount(account.id)"
@@ -39,28 +39,42 @@
                 {{ account.username }}
               </md-menu-item>
               <md-divider />
-              <md-menu-item to="/sign">Log Out</md-menu-item>
+              <md-menu-item :to="{ name: 'Sign' }">Log Out</md-menu-item>
             </md-menu-content>
           </md-menu>
         </md-toolbar>
 
-        <md-list>
-          <md-list-item :to="{ name: 'News' }" exact>
-            <span class="md-list-item-text">Main</span>
-          </md-list-item>
-
-          <md-list-item :to="{ name: 'Dialogs' }">
-            <span class="md-list-item-text">Dialogs</span>
-          </md-list-item>
-
-          <md-list-item :to="{ name: 'Comments' }">
-            <span class="md-list-item-text">My comments</span>
-          </md-list-item>
-
-          <md-list-item :to="{ name: 'Settings' }">
-            <span class="md-list-item-text">Settings</span>
-          </md-list-item>
-        </md-list>
+        <NavList v-if="!isDialogsPage" />
+        <md-tabs v-else md-alignment="fixed" md-active-tab="tab-dialogs">
+          <md-tab id="tab-pages" md-label="Pages">
+            <NavList />
+          </md-tab>
+          <md-tab id="tab-dialogs" md-label="Dialogs">
+            <md-list class="md-double-line padding-0">
+              <md-list-item
+                v-for="preview in dialogsPreviews"
+                :key="preview.id"
+                :to="{ name: 'Dialogs', params: { id: preview.id } }"
+              >
+                <md-avatar>
+                  <img :src="preview.pictureSrc" alt="Dialog image" />
+                </md-avatar>
+                <div class="md-list-item-text">
+                  <span class="flex">
+                    <span class="inline bold flexFill">{{ preview.name }}</span>
+                    <span class="inline right unsetOverflow">{{ preview.dateTimeStr }}</span>
+                  </span>
+                  <span>
+                    <strong>
+                      {{ preview.isDraft ? "Draft" : preview.isCurrentAccount(selectedAccount.id) ? "You" : preview.shortUsername }}:
+                    </strong>
+                    {{ preview.text }}
+                  </span>
+                </div>
+              </md-list-item>
+            </md-list>
+          </md-tab>
+        </md-tabs>
       </md-app-drawer>
 
       <md-app-content>
@@ -73,11 +87,19 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Account from "@/data/Account";
+import NavList from "@/components/NavList.vue";
+import DialogPreview from "@/data/DialogPreview";
 
-@Component
+@Component({
+  components: { NavList }
+})
 export default class Sidebar extends Vue {
   selectAccount(id: number) {
     this.$store.commit("accounts/selectAccount", id);
+  }
+
+  get dialogsPreviews(): DialogPreview[] {
+    return this.$store.getters["dialogsPreviews/getPreviews"];
   }
 
   get selectedAccount(): Account {
@@ -86,6 +108,10 @@ export default class Sidebar extends Vue {
 
   get accounts(): Account[] {
     return this.$store.state.accounts.accounts;
+  }
+
+  get isDialogsPage(): boolean {
+    return this.$route.name === "Dialogs";
   }
 }
 </script>
@@ -120,5 +146,43 @@ export default class Sidebar extends Vue {
 
 .md-list-item >>> .md-list-item-content {
   justify-content: flex-start;
+}
+
+.md-tab {
+  padding: 0;
+}
+
+.md-tabs >>> .md-tab-nav-button {
+  min-width: 0 !important;
+}
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.inline {
+  display: inline;
+}
+
+.flex {
+  display: flex;
+}
+
+.flexFill {
+  flex: 1 1 auto !important;
+  min-width: 0;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.right {
+  float: right;
+}
+
+.unsetOverflow {
+  overflow: unset;
+  width: auto;
 }
 </style>
