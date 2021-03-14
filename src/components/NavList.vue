@@ -6,6 +6,10 @@
 
     <md-list-item :to="{ name: 'Dialogs' }">
       <span class="md-list-item-text">Dialogs</span>
+      <md-badge
+        v-if="unreadMessagesCount > 0"
+        :md-content="unreadMessagesCount"
+      />
     </md-list-item>
 
     <md-list-item :to="{ name: 'Comments' }">
@@ -22,7 +26,11 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class NavList extends Vue {}
+export default class NavList extends Vue {
+  get unreadMessagesCount(): number {
+    return this.$store.getters["dialogsPreviews/getTotalUnreadMessages"];
+  }
+}
 </script>
 
 <style scoped></style>

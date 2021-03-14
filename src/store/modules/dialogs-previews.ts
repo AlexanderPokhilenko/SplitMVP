@@ -14,6 +14,13 @@ const dialogsPreviews: Module<DialogsPreviewsState, RootState> = {
   namespaced: true,
   state,
   getters: {
+    getTotalUnreadMessages: (state, getters) => {
+      return getters.getPreviews.reduce(
+        (total: number, preview: DialogPreview) =>
+          total + preview.unreadMessagesCount,
+        0
+      );
+    },
     getPreviews: (state, getters, rootState, rootGetters) => {
       const previews = [];
       const dialogs: Dialog[] = rootGetters["dialogs/getDialogs"];
