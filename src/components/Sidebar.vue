@@ -71,6 +71,7 @@
                     {{ preview.text }}
                   </span>
                 </div>
+                <md-badge v-if="preview.unreadMessagesCount > 0" :md-content="preview.unreadMessagesCount" />
               </md-list-item>
             </md-list>
           </md-tab>

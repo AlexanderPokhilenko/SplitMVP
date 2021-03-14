@@ -155,13 +155,13 @@ export default class Dialogs extends Vue {
   }
 
   updated(): void {
-    this.scrollToLastRead();
+    if (this.id !== undefined) {
+      this.$store.commit("dialogs/markDialogAsRead", this.id);
+      this.scrollToLastRead();
+    }
   }
 
   scrollToLastRead(): void {
-    if (this.id === undefined) {
-      return;
-    }
     const lastReadMessage = document.getElementById(
       "msg" + this.dialog.lastReadMessageId
     );
