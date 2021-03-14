@@ -23,3 +23,5 @@ export default class Message {
       : Message.timeFormatter.format(this.dateTime);
   }
 }
+
+export const noMessage = new Message(0, "No messages yet.", -1);

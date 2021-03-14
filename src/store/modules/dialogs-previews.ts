@@ -17,6 +17,10 @@ const dialogsPreviews: Module<DialogsPreviewsState, RootState> = {
     getPreviews: (state, getters, rootState, rootGetters) => {
       const previews = [];
       const dialogs: Dialog[] = rootGetters["dialogs/getDialogs"];
+      dialogs.sort(
+        (d1, d2) =>
+          d2.lastMessage.dateTime.getTime() - d1.lastMessage.dateTime.getTime()
+      );
       for (const dialog of dialogs) {
         const preview: DialogPreview = getters.getPreviewFromDialog(dialog);
         previews.push(preview);

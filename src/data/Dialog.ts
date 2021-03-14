@@ -1,4 +1,4 @@
-import Message from "./Message";
+import Message, { noMessage } from "./Message";
 import Account from "./Account";
 
 export default class Dialog {
@@ -15,7 +15,17 @@ export default class Dialog {
       this.lastReadMessageId = messages[messages.length - 1].id;
     }
   }
+
   public get isDirect(): boolean {
-    return this.interlocutors.length <= 2;
+    return (
+      this.interlocutors.length <= 2 &&
+      this.name === undefined &&
+      this.pictureSrc === undefined
+    );
+  }
+
+  public get lastMessage(): Message {
+    const length = this.messages.length;
+    return length === 0 ? noMessage : this.messages[length - 1];
   }
 }
