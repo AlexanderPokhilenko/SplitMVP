@@ -93,6 +93,10 @@ const dialogs: Module<DialogsState, RootState> = {
         dialog.messages[dialog.messages.length - 1].id
       );
     },
+    addDraft(state: DialogsState, { dialogId, message }: AddingMessage): void {
+      const dialog = state.dialogs[dialogId];
+      Vue.set(dialog, "draftText", message);
+    },
     clearDraft(state: DialogsState, id: number): void {
       const dialog = state.dialogs[id];
       Vue.set(dialog, "draftText", null);
@@ -122,7 +126,10 @@ const dialogs: Module<DialogsState, RootState> = {
               accounts.find(a => a.id === acc.id)
             )?.id ?? 0;
 
-      commit("addMessage", new Message(nextMessageId, text, accountId));
+      commit("addMessage", {
+        dialogId: dialog.id,
+        message: new Message(nextMessageId, text, accountId)
+      });
       commit("markDialogAsRead", dialog.id);
       commit("clearDraft", dialog.id);
     }
