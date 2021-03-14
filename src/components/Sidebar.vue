@@ -2,10 +2,17 @@
   <div class="page-container">
     <md-app md-waterfall md-mode="fixed">
       <md-app-toolbar class="md-primary">
+        <md-button
+          class="md-icon-button"
+          @click="menuVisible = !menuVisible"
+          v-if="!menuVisible"
+        >
+          <md-icon>menu</md-icon>
+        </md-button>
         <span class="md-title">Split</span>
       </md-app-toolbar>
 
-      <md-app-drawer md-permanent="full">
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
         <md-toolbar class="md-transparent" md-elevation="0">
           <md-menu md-size="auto" class="fill">
             <md-button md-menu-trigger class="fill">
@@ -62,16 +69,27 @@
                 <div class="md-list-item-text">
                   <span class="flex">
                     <span class="inline bold flexFill">{{ preview.name }}</span>
-                    <span class="inline right unsetOverflow">{{ preview.dateTimeStr }}</span>
+                    <span class="inline right unsetOverflow">{{
+                      preview.dateTimeStr
+                    }}</span>
                   </span>
                   <span>
                     <strong>
-                      {{ preview.isDraft ? "Draft" : preview.isCurrentAccount(selectedAccount.id) ? "You" : preview.shortUsername }}:
+                      {{
+                        preview.isDraft
+                          ? "Draft"
+                          : preview.isCurrentAccount(selectedAccount.id)
+                          ? "You"
+                          : preview.shortUsername
+                      }}:
                     </strong>
                     {{ preview.text }}
                   </span>
                 </div>
-                <md-badge v-if="preview.unreadMessagesCount > 0" :md-content="preview.unreadMessagesCount" />
+                <md-badge
+                  v-if="preview.unreadMessagesCount > 0"
+                  :md-content="preview.unreadMessagesCount"
+                />
               </md-list-item>
             </md-list>
           </md-tab>
@@ -95,6 +113,8 @@ import DialogPreview from "@/data/DialogPreview";
   components: { NavList }
 })
 export default class Sidebar extends Vue {
+  private menuVisible = true;
+
   selectAccount(id: number) {
     this.$store.commit("accounts/selectAccount", id);
   }
