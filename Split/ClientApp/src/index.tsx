@@ -12,6 +12,9 @@ import Sign from "./components/Sign";
 import Settings from "./components/Settings";
 import NotFound from "./components/NotFound";
 import RootStore from "./stores/RootStore";
+import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
+import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
+import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
 const rootStore = new RootStore();
 
@@ -28,10 +31,11 @@ ReactDOM.render(
             <Sidebar>
                 <Switch>
                     <Route exact path="/" component={News} />
-                    <Route path="/dialogs/:id(\d+)?" component={Dialogs} />
-                    <Route path="/settings" component={Settings} />
-                    <Route path="/comments" component={Comments} />
+                    <AuthorizeRoute path="/dialogs/:id(\d+)?" component={Dialogs} />
+                    <AuthorizeRoute path="/settings" component={Settings} />
+                    <AuthorizeRoute path="/comments" component={Comments} />
                     <Route path="/sign" component={Sign} />
+					<Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
                     <Route component={NotFound} />
                 </Switch>
             </Sidebar>

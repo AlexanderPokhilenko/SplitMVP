@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Split.iml" filepath="$PROJECT_DIR$/.idea/Split.iml" />
+      <module fileurl="file://$PROJECT_DIR$/split.iml" filepath="$PROJECT_DIR$/split.iml" />
     </modules>
   </component>
 </project>
