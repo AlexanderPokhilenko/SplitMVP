@@ -13,7 +13,8 @@ export class AuthorizeService {
 
     async isAuthenticated() {
         const user = await this.getUser();
-        return !!user;
+        this._isAuthenticated = !!user;
+        return this._isAuthenticated;
     }
 
     async getUser() {

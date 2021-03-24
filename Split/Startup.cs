@@ -1,16 +1,22 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Split.BLL.Services;
 using Split.DAL;
 using Split.DAL.Models;
+using Split.Hubs;
 
 namespace Split
 {
@@ -38,9 +44,14 @@ namespace Split
             services.AddIdentityServer().AddApiAuthorization<MultiAccount, AuthContext>();
 
             services.AddAuthentication().AddIdentityServerJwt();
+            services.TryAddEnumerable(
+                ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>,
+                    ConfigureJwtBearerOptions>());
 
             services.AddTransient<AccountsService>();
             services.AddTransient<DialogsService>();
+
+            services.AddSignalR();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -67,6 +78,8 @@ namespace Split
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseWebSockets();
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -78,6 +91,8 @@ namespace Split
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<DialogsHub>("/hubs/dialogs");
+                endpoints.MapHub<AccountsHub>("/hubs/accounts");
             });
 
             app.UseSpa(spa =>

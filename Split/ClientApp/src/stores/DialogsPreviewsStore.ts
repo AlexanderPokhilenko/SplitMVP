@@ -5,6 +5,7 @@ import RootStore from "./RootStore";
 import Dialog from '../data/Dialog';
 import Account from "../data/Account";
 import { computed, makeObservable } from "mobx";
+import Message from '../data/Message';
 
 export default class DialogsPreviewsStore {
     private readonly unknownInterlocutor: Account;
@@ -22,11 +23,28 @@ export default class DialogsPreviewsStore {
         return str === undefined || str === null || str.match(/^ *$/) !== null;
     }
 
+    private getLastMessageDateTime(dialogId: number) : Date {
+        const messages = this.dialogsStore.getMessagesById(dialogId);
+        const messagesCount = messages.length;
+        if(messagesCount > 0) {
+            const lastMessage = messages[messagesCount - 1];
+            const date = lastMessage.date;
+            return date instanceof Date ? date : new Date(date);
+        }
+        else {
+            return new Date(0);
+        }
+    }
+
+    @computed get isAuthorized(): boolean {
+        return this.accountsStore.isAuthorized;
+    }
+
     @computed public get previews(): DialogPreview[] {
         const previews = [];
         const dialogs = this.dialogsStore.allDialogs
             .sort((d1, d2) =>
-                (d2.lastMessageDateTime?.getTime() ?? 0) - (d1.lastMessageDateTime?.getTime() ?? 0));
+                this.getLastMessageDateTime(d2.id).getTime() - this.getLastMessageDateTime(d1.id).getTime());
         for (const dialog of dialogs) {
             const preview = this.getPreviewFromDialog(dialog);
             previews.push(preview);
@@ -40,16 +58,20 @@ export default class DialogsPreviewsStore {
     }
 
     public getPreviewFromDialog(dialog: Dialog): DialogPreview {
-        const lastMessage = dialog.messages[dialog.messages.length - 1];
+        const messages = this.dialogsStore.getMessagesById(dialog.id);
+        const lastMessage = messages.length > 0 ? messages[messages.length - 1] : new Message(0, "No messages yet...", -1);
         const lastAuthor = this.accountsStore.getAccountById(lastMessage.authorId);
-        const dateTimeStr = lastMessage.dateTimeStr;
+        const dateTimeStr = Message.getDateTimeStr(lastMessage.date);
         const currentAccounts = this.accountsStore.userAccounts;
-        const otherInterlocutor = dialog.interlocutors.find(acc => !currentAccounts.find(a => a.id === acc.id)) ?? this.unknownInterlocutor;
-        const name = dialog.isDirect ? otherInterlocutor.username : dialog.name!;
-        const picture = dialog.isDirect ? otherInterlocutor.imageUrl : dialog.pictureSrc!;
-        const isDraft = !DialogsPreviewsStore.isNullOrWhitespace(dialog.draftText);
-        const text = isDraft ? dialog.draftText! : lastMessage.text;
+        const otherId = dialog.membersIds.find(id => !currentAccounts.find(a => a.id === id)) ?? -2;
+        const otherInterlocutor = this.accountsStore.getAccountById(otherId) ?? this.unknownInterlocutor;
+        const name = Dialog.checkIsDirect(dialog) ? otherInterlocutor.username : dialog.name!;
+        const picture = Dialog.checkIsDirect(dialog) ? otherInterlocutor.imageUrl : dialog.imageUrl!;
+        const draftText = this.dialogsStore.getDraftById(dialog.id);
+        const isDraft = !DialogsPreviewsStore.isNullOrWhitespace(draftText);
+        const text = isDraft ? draftText! : lastMessage.text;
+        const unreadCount = messages.indexOf(lastMessage) - messages.indexOf(messages.find(m => m.id === dialog.lastReadMessageId) ?? lastMessage);
         return new DialogPreview(dialog.id, name, picture, dateTimeStr, text,
-            lastAuthor, lastMessage.id - dialog.lastReadMessageId, isDraft);
+            lastAuthor, unreadCount, isDraft);
     }
 }

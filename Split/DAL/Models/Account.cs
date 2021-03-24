@@ -15,7 +15,6 @@ namespace Split.DAL.Models
         [Required]
         public string Username { get; set; }
 
-        [Required]
         public string ImageUrl { get; set; }
 
         [Required]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Split.BLL.Models
 {
@@ -11,17 +12,20 @@ namespace Split.BLL.Models
 
         public string ImageUrl { get; set; }
 
-        public bool IsDirect { get; set; }
+        public long LastReadMessageId { get; set; }
 
-        public DialogInfo() : this(0, "Unknown Dialog", "/images/icon.png", false)
+        public IEnumerable<long> MembersIds { get; set; }
+
+        public DialogInfo() : this(0, "Unknown Dialog", "/images/icon.png", 0, new long[0])
         { }
 
-        public DialogInfo(long id, string name, string imageUrl, bool isDirect)
+        public DialogInfo(long id, string name, string imageUrl, long lastReadMessageId, IEnumerable<long> membersIds)
         {
             Id = id;
             Name = name;
             ImageUrl = imageUrl;
-            IsDirect = isDirect;
+            MembersIds = membersIds;
+            LastReadMessageId = lastReadMessageId;
         }
     }
 }

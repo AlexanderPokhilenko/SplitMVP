@@ -16,6 +16,9 @@ import clsx from "clsx";
 
 const styles = (theme: Theme) =>
     createStyles({
+        text: {
+            whiteSpace: 'pre-wrap'
+        },
         inline: {
             display: 'inline'
         },
@@ -67,11 +70,11 @@ class MessageItem extends Component<Props> {
                     />
                 )}
                 <CardContent className="message-content">
-                    <Typography component="span" className={clsx(this.props.classes.inline, "text-break")}>
+                    <Typography component="span" className={clsx(this.props.classes.inline, this.props.classes.text, "text-break")}>
                         {message.text}
                     </Typography>
                     <Typography component="span" className={clsx(this.props.classes.inline, "message-date-time")} color="textSecondary">
-                        {message.dateTimeStr}
+                        {Message.getDateTimeStr(message.date)}
                     </Typography>
                 </CardContent>
             </Card>

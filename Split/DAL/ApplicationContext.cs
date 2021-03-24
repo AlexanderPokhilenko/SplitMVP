@@ -24,6 +24,8 @@ namespace Split.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MultiAccount>().HasIndex(entity => entity.Email).IsUnique();
+            //modelBuilder.Entity<Account>().HasIndex(entity => entity.Username).IsUnique();
+            modelBuilder.Entity<DialogMember>().HasIndex(entity => new {entity.AccountId, entity.DialogId}).IsUnique();
         }
     }
 }

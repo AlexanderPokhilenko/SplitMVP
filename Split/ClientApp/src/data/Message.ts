@@ -5,14 +5,15 @@ export default class Message {
     constructor(public id: number,
                 public text: string,
                 public authorId: number,
-                public dateTime: Date = new Date(),
-                public filesSrc: string[] = []) {
+                public date: Date | string = new Date()/*,
+                public filesSrc: string[] = []*/) {
     }
 
-    get dateTimeStr(): string {
+    public static getDateTimeStr(date: Date | string): string {
+        const dateTime = date instanceof Date ? date : new Date(date);
         const oneDayMs = 60 * 60 * 24 * 1000;
         const dayAgo = Date.now() - oneDayMs;
-        const isOld = dayAgo >= this.dateTime.getTime();
-        return isOld ? Message.dateFormatter.format(this.dateTime) : Message.timeFormatter.format(this.dateTime);
+        const isOld = dayAgo >= dateTime.getTime();
+        return isOld ? Message.dateFormatter.format(dateTime) : Message.timeFormatter.format(dateTime);
     }
 }

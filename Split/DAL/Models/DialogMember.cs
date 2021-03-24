@@ -11,6 +11,12 @@ namespace Split.DAL.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        [ForeignKey("MessageId")]
+        public long LastReadMessageId { get; set; }
+
+        [ForeignKey("MessageId")]
+        public Message LastReadMessage { get; set; }
+
         [Required]
         [ForeignKey("DialogId")]
         public long DialogId { get; set; }

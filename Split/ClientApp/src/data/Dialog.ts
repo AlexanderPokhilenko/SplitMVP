@@ -1,33 +1,18 @@
-import Message from './Message';
-import Account from './Account';
-import { makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class Dialog {
-    @observable public draftText: string | null;
-    @observable public lastReadMessageId: number;
     constructor(public id: number,
-                public interlocutors: Account[],
-                public messages: Message[],
-                public name?: string,
-                public pictureSrc?: string,
-                lastReadMessageId: number = 0,
-                draftText: string = "") {
-        this.lastReadMessageId = lastReadMessageId >= 0 ? lastReadMessageId : messages[messages.length - 1].id;
-        this.draftText = draftText;
-        makeObservable(this);
-    }
-    public get isDirect(): boolean {
-        return this.interlocutors.length <= 2 && this.name === undefined && this.pictureSrc === undefined;
+                public name: string | null,
+                public imageUrl: string | null,
+                public membersIds: number[],
+                public lastReadMessageId: number = 0) {
+        makeAutoObservable(this);
     }
 
-    public get lastMessageDateTime(): Date | null {
-        const messagesCount = this.messages.length;
-        if(messagesCount === 0) {
-            return null;
-        }
-        else {
-            return this.messages[messagesCount - 1].dateTime;
-        }
+    public static checkIsDirect(dialog: Dialog): boolean {
+        return dialog.membersIds.length <= 2 &&
+            (dialog.name === undefined || dialog.name === null) &&
+            (dialog.imageUrl === undefined || dialog.imageUrl === null);
     }
 }
 

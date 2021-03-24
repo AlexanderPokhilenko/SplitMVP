@@ -1,21 +1,21 @@
-import  '../../css/dialogs.css';
-import  '../../css/containers.css';
-import {Component, Fragment, MouseEvent, ChangeEvent} from "react";
-import { inject, observer } from "mobx-react";
-import { Redirect } from "react-router-dom";
-import { Theme, createStyles } from '@material-ui/core/styles';
+import '../../css/dialogs.css';
+import '../../css/containers.css';
+import {ChangeEvent, Component, Fragment, MouseEvent} from "react";
+import {inject, observer} from "mobx-react";
+import {Redirect} from "react-router-dom";
+import {createStyles, Theme} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import {
-    Card,
-    CardHeader,
-    CardContent,
-    CardActions,
     Avatar,
-    IconButton,
-    Menu,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
     FormControl,
-    OutlinedInput,
+    IconButton,
     InputAdornment,
+    Menu,
+    OutlinedInput,
     Typography,
     withStyles
 } from '@material-ui/core';
@@ -27,8 +27,9 @@ import DialogsStore from "../../stores/DialogsStore";
 import DialogsPreviewsStore from "../../stores/DialogsPreviewsStore";
 import Dialog from "../../data/Dialog";
 import AccountDropdownItem from "./AccountDropdownItem";
-import Account from "../../data/Account";
 import MessageItem from "./MessageItem";
+import Divider from "@material-ui/core/Divider";
+import AccountInvitationItem from "./AccountInvitationItem";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -104,14 +105,17 @@ class Chat extends Component<Props, State> {
                 >
                     {secondPart}
                 </Typography>
-        </Fragment>);
+        </Fragment>
+        );
     }
 
     private getFirstCurrentAccountUsername(dialog: Dialog): string {
-        const selectedAccount = this.props.AccountsStore.selectedAccount;
+        const accountsStore = this.props.AccountsStore;
+        const selectedAccount = accountsStore.selectedAccount;
         this.props.DialogsStore.getDialogById(this.props.dialogId);
-        if (dialog.interlocutors.find(acc => acc === selectedAccount)) { return selectedAccount.username; }
-        return dialog.interlocutors.find(acc => this.isCurrentAccount(acc.id))?.username ?? "";
+        if (dialog.membersIds.find(id => id === selectedAccount.id)) { return selectedAccount.username; }
+        const currentAccountId = dialog.membersIds.find(id => this.isCurrentAccount(id));
+        return accountsStore.getAccountById(currentAccountId ?? -1).username;
     }
 
     private isCurrentAccount(id: number): boolean {
@@ -119,8 +123,8 @@ class Chat extends Component<Props, State> {
         return accounts.find(a => a.id === id) !== undefined;
     }
 
-    private getSelectedClassName(account: Account): string {
-        return this.isCurrentAccount(account.id) ? this.props.classes.selected : "";
+    private getSelectedClassName(id: number): string {
+        return this.isCurrentAccount(id) ? this.props.classes.selected : "";
     }
 
     private scrollToLastRead(): void {
@@ -131,37 +135,69 @@ class Chat extends Component<Props, State> {
         lastReadMessage.scrollIntoView();
     }
 
+    private tryMarkDialogAsRead() {
+        const dialogsStore = this.props.DialogsStore;
+        if(dialogsStore.dialogsConnection.isConnected) {
+            dialogsStore.markDialogAsRead(this.props.dialogId);
+        }
+        else {
+            dialogsStore.dialogsConnection.lastPromise.then(() => dialogsStore.markDialogAsRead(this.props.dialogId));
+        }
+    }
+
+    private leaveDialog = (accountId: number) => {
+        console.log("Leaving...");
+        const {DialogsStore: dialogsStore, AccountsStore: accountsStore, dialogId} = this.props;
+        dialogsStore.dialogsConnection.leaveChat(accountId, dialogId).then(() => {
+            console.log("???");
+            const membersIds = dialogsStore.getDialogById(dialogId).membersIds;
+            const userAccounts = accountsStore.userAccounts;
+            if(!membersIds.some(id => userAccounts.some(a => a.id === id))) {
+                console.log("Go back");
+                this.context.router.history.push("/dialogs");
+            }
+            console.log("Left!");
+        });
+    };
+
     componentDidMount() {
-        this.props.DialogsStore.markDialogAsRead(this.props.dialogId);
+        this.tryMarkDialogAsRead();
         this.scrollToLastRead();
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        if(this.props.dialogId !== prevProps.dialogId){
-            this.props.DialogsStore.markDialogAsRead(this.props.dialogId);
-            this.props.DialogsStore.updateDialogDraft(prevProps.dialogId, prevState.draft);
-            const currentDialog = this.props.DialogsStore.getDialogById(this.props.dialogId);
-            this.setState({draft: currentDialog?.draftText ?? ""});
+        if(this.props.dialogId !== prevProps.dialogId) {
+            this.tryMarkDialogAsRead();
+            const dialogsStore = this.props.DialogsStore;
+            dialogsStore.updateDialogDraft(prevProps.dialogId, prevState.draft);
+            this.setState({draft: dialogsStore.getDraftById(this.props.dialogId)});
         }
         this.scrollToLastRead();
     }
 
     render() {
-        const id = this.props.dialogId;
-        const dialogsStore = this.props.DialogsStore;
-        const previewsStore = this.props.DialogsPreviewsStore;
+        const {
+            dialogId: id,
+            DialogsStore: dialogsStore,
+            AccountsStore: accountsStore,
+            DialogsPreviewsStore: previewsStore
+        } = this.props;
         const dialog = dialogsStore.getDialogById(id);
 
         if(dialog === dialogsStore.unknownDialog) {
             return <Redirect to={"/dialogs"} />;
         }
 
+        const isDirect = Dialog.checkIsDirect(dialog);
+
         const preview = previewsStore.getPreviewFromDialog(dialog);
-        const subheader = dialog.isDirect ?
+        const subheader = isDirect ?
             this.createSubheader("Direct messages to ", this.getFirstCurrentAccountUsername(dialog)) :
-            this.createSubheader(dialog.interlocutors.length + " members including ", this.getFirstCurrentAccountUsername(dialog));
+            this.createSubheader(dialog.membersIds.length + " members including ", this.getFirstCurrentAccountUsername(dialog));
 
         const membersMenuId = "chat_members_menu";
+        const draft = this.state.draft ?? dialogsStore.getDraftById(id) ?? "";
+        const messages = dialogsStore.getMessagesById(id);
 
         return (
             <Fragment>
@@ -172,12 +208,12 @@ class Chat extends Component<Props, State> {
                                 avatar={<Avatar className="thumbnail" alt={preview.name} src={preview.pictureSrc}/>}
                                 title={<Typography className={this.props.classes.bold}>{preview.name}</Typography>}
                                 subheader={subheader}
-                                action={!dialog.isDirect && (
+                                action={!isDirect && (
                                     <IconButton aria-label="members" aria-controls={membersMenuId} aria-haspopup="true" onClick={this.handleMenuClick}>
                                         <MoreVertIcon/>
                                     </IconButton>)}
                             />
-                            {!dialog.isDirect && (
+                            {!isDirect && (
                                 <Menu
                                     id={membersMenuId}
                                     anchorEl={this.state.menuAnchorEl}
@@ -185,19 +221,22 @@ class Chat extends Component<Props, State> {
                                     open={Boolean(this.state.menuAnchorEl)}
                                     onClose={this.handleMenuClose}
                                 >
-                                    {dialog.interlocutors.map(account =>
-                                        <AccountDropdownItem key={"member_" + account.id} account={account}  onClick={this.handleMenuClose} specialClassName={this.getSelectedClassName(account)}/>)}
+                                    {dialog.membersIds.map(accountId =>
+                                        <AccountDropdownItem key={"member_" + accountId} account={accountsStore.getAccountById(accountId)}  onClick={this.isCurrentAccount(accountId) ? this.leaveDialog : this.handleMenuClose} specialClassName={this.getSelectedClassName(accountId)}/>)
+                                    }
+                                    <Divider />
+                                    <AccountInvitationItem dialogId={dialog.id} key="invite_member"/>
                                 </Menu>
                             )}
                             <CardContent id="messages-container">
-                                {dialog.messages.map(msg => (
-                                    <MessageItem key={"msg_" + msg.id} message={msg} isDirect={dialog.isDirect} isLeftAligned={!this.isCurrentAccount(msg.authorId)}/>
+                                {messages.map(msg => (
+                                    <MessageItem key={"msg_" + msg.id} message={msg} isDirect={isDirect} isLeftAligned={!this.isCurrentAccount(msg.authorId)}/>
                                 ))}
                             </CardContent>
                             <CardActions disableSpacing>
                                 <FormControl fullWidth variant="outlined">
                                     <OutlinedInput multiline rows={1} rowsMax={4} placeholder="Write message..."
-                                                   value={this.state.draft ?? dialog.draftText ?? ""}
+                                                   value={draft}
                                                    onChange={this.handleTextChange}
                                                    startAdornment={(
                                                        <InputAdornment position="start">

@@ -18,6 +18,7 @@ import DialogPreviews from "./DialogPreviews";
 import { matchPath } from 'react-router';
 import { inject, observer } from "mobx-react";
 import DialogsPreviewsStore from '../../stores/DialogsPreviewsStore';
+import DialogsCreator from "./DialogsCreator";
 
 const drawerWidth = 240;
 
@@ -132,7 +133,8 @@ class Sidebar extends Component<CurrentProps, State> {
     }
 
     render() {
-        const { classes, theme } = this.props;
+        const { classes, theme, DialogsPreviewsStore } = this.props;
+        const disableElements = !DialogsPreviewsStore.isAuthorized;
         const isDialogPage = matchPath(this.props.location.pathname, "/dialogs/:id(\\d+)?");
 
         const navList = (
@@ -140,15 +142,15 @@ class Sidebar extends Component<CurrentProps, State> {
                 <ListItem button key={"main_nav_item"} component={NavLink} to={'/'} exact activeClassName={classes.active}>
                     <ListItemText primary={"Main"} />
                 </ListItem>
-                <ListItem button key={"dialogs_nav_item"} component={NavLink} to={'/dialogs'} activeClassName={classes.active}>
-                    <Badge badgeContent={this.props.DialogsPreviewsStore.totalUnreadMessages} color="secondary">
+                <ListItem button key={"dialogs_nav_item"} disabled={disableElements} component={NavLink} to={'/dialogs'} activeClassName={classes.active}>
+                    <Badge badgeContent={disableElements ? 0 : DialogsPreviewsStore.totalUnreadMessages} color="secondary">
                         <ListItemText primary={"Dialogs"} />
                     </Badge>
                 </ListItem>
-                <ListItem button key={"comments_nav_item"} component={NavLink} to={'/comments'} activeClassName={classes.active}>
+                <ListItem button key={"comments_nav_item"} disabled={disableElements} component={NavLink} to={'/comments'} activeClassName={classes.active}>
                     <ListItemText primary={"My comments"} />
                 </ListItem>
-                <ListItem button key={"settings_nav_item"} component={NavLink} to={'/settings'} activeClassName={classes.active}>
+                <ListItem button key={"settings_nav_item"} disabled={disableElements} component={NavLink} to={'/settings'} activeClassName={classes.active}>
                     <ListItemText primary={"Settings"} />
                 </ListItem>
             </List>
@@ -164,6 +166,7 @@ class Sidebar extends Component<CurrentProps, State> {
                     {navList}
                 </TabPanel>
                 <TabPanel value={this.state.tabIndex} index={1}>
+                    <DialogsCreator/>
                     <DialogPreviews/>
                 </TabPanel>
             </Fragment>
