@@ -30,6 +30,7 @@ import AccountDropdownItem from "./AccountDropdownItem";
 import MessageItem from "./MessageItem";
 import Divider from "@material-ui/core/Divider";
 import AccountInvitationItem from "./AccountInvitationItem";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -60,6 +61,8 @@ interface Props extends StoreProps {
 interface State {
     menuAnchorEl: HTMLElement | null;
     draft: string;
+    leavingDialogIsOpen: boolean;
+    leavingAccountId: number;
 }
 
 @inject("DialogsStore", "DialogsPreviewsStore", "AccountsStore")
@@ -69,7 +72,7 @@ class Chat extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        this.state = { ...this.state, draft: "" };
+        this.state = { ...this.state, draft: "", leavingDialogIsOpen: false };
     }
 
     handleMenuClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -109,13 +112,12 @@ class Chat extends Component<Props, State> {
         );
     }
 
-    private getFirstCurrentAccountUsername(dialog: Dialog): string {
+    private getFirstCurrentAccountId(dialog: Dialog): number | undefined {
         const accountsStore = this.props.AccountsStore;
         const selectedAccount = accountsStore.selectedAccount;
         this.props.DialogsStore.getDialogById(this.props.dialogId);
-        if (dialog.membersIds.find(id => id === selectedAccount.id)) { return selectedAccount.username; }
-        const currentAccountId = dialog.membersIds.find(id => this.isCurrentAccount(id));
-        return accountsStore.getAccountById(currentAccountId ?? -1).username;
+        if (dialog.membersIds.find(id => id === selectedAccount.id)) { return selectedAccount.id; }
+        return dialog.membersIds.find(id => this.isCurrentAccount(id));
     }
 
     private isCurrentAccount(id: number): boolean {
@@ -145,20 +147,19 @@ class Chat extends Component<Props, State> {
         }
     }
 
-    private leaveDialog = (accountId: number) => {
-        console.log("Leaving...");
-        const {DialogsStore: dialogsStore, AccountsStore: accountsStore, dialogId} = this.props;
-        dialogsStore.dialogsConnection.leaveChat(accountId, dialogId).then(() => {
-            console.log("???");
-            const membersIds = dialogsStore.getDialogById(dialogId).membersIds;
-            const userAccounts = accountsStore.userAccounts;
-            if(!membersIds.some(id => userAccounts.some(a => a.id === id))) {
-                console.log("Go back");
-                this.context.router.history.push("/dialogs");
-            }
-            console.log("Left!");
-        });
+    private handleLeavingDialog = (accountId: number) => {
+        this.setState({leavingDialogIsOpen: true, leavingAccountId: accountId});
     };
+
+    private leaveDialog = () => {
+        const accountId = this.state.leavingAccountId;
+        const {DialogsStore: dialogsStore, dialogId} = this.props;
+        dialogsStore.dialogsConnection.leaveChat(accountId, dialogId).then(() => this.setState({leavingDialogIsOpen: false, leavingAccountId: -1}));
+    };
+
+    private hideLeavingConfirmation = () => {
+        this.setState({leavingDialogIsOpen: false, leavingAccountId: -1});
+    }
 
     componentDidMount() {
         this.tryMarkDialogAsRead();
@@ -184,16 +185,20 @@ class Chat extends Component<Props, State> {
         } = this.props;
         const dialog = dialogsStore.getDialogById(id);
 
-        if(dialog === dialogsStore.unknownDialog) {
-            return <Redirect to={"/dialogs"} />;
-        }
+        if(dialog === dialogsStore.unknownDialog) return <Redirect to={"/dialogs"} />;
+
+        const firstCurrentAccountId = this.getFirstCurrentAccountId(dialog);
+
+        if(firstCurrentAccountId === undefined) return <h1>You no longer have access to this chat, please choose other dialog.</h1>;
+
+        const firstCurrentUsername = accountsStore.getAccountById(firstCurrentAccountId ?? -1).username;
 
         const isDirect = Dialog.checkIsDirect(dialog);
-
         const preview = previewsStore.getPreviewFromDialog(dialog);
+
         const subheader = isDirect ?
-            this.createSubheader("Direct messages to ", this.getFirstCurrentAccountUsername(dialog)) :
-            this.createSubheader(dialog.membersIds.length + " members including ", this.getFirstCurrentAccountUsername(dialog));
+            this.createSubheader("Direct messages to ", firstCurrentUsername) :
+            this.createSubheader(dialog.membersIds.length + " members including ", firstCurrentUsername);
 
         const membersMenuId = "chat_members_menu";
         const draft = this.state.draft ?? dialogsStore.getDraftById(id) ?? "";
@@ -222,12 +227,13 @@ class Chat extends Component<Props, State> {
                                     onClose={this.handleMenuClose}
                                 >
                                     {dialog.membersIds.map(accountId =>
-                                        <AccountDropdownItem key={"member_" + accountId} account={accountsStore.getAccountById(accountId)}  onClick={this.isCurrentAccount(accountId) ? this.leaveDialog : this.handleMenuClose} specialClassName={this.getSelectedClassName(accountId)}/>)
+                                        <AccountDropdownItem key={"member_" + accountId} account={accountsStore.getAccountById(accountId)}  onClick={this.isCurrentAccount(accountId) ? this.handleLeavingDialog : this.handleMenuClose} specialClassName={this.getSelectedClassName(accountId)}/>)
                                     }
                                     <Divider />
                                     <AccountInvitationItem dialogId={dialog.id} key="invite_member"/>
                                 </Menu>
                             )}
+                            <ConfirmationDialog title="Leave current dialog?" text={`Do you really want to leave chat '${preview.name}'?`} onAborted={this.hideLeavingConfirmation} onConfirmed={this.leaveDialog} open={this.state.leavingDialogIsOpen}/>
                             <CardContent id="messages-container">
                                 {messages.map(msg => (
                                     <MessageItem key={"msg_" + msg.id} message={msg} isDirect={isDirect} isLeftAligned={!this.isCurrentAccount(msg.authorId)}/>
