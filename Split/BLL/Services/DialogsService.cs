@@ -47,6 +47,7 @@ namespace Split.BLL.Services
                 .ThenInclude(d => d.Messages)
                 .Where(m => m.Account.MultiAccountId == multiAccountId)
                 .Select(m => m.Dialog)
+                .Distinct()
                 .Select(d => d.Messages)
                 .Select(g => g.OrderByDescending(m => m.Id).FirstOrDefault())
                 .Where(m => m != null)
